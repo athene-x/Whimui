@@ -35,9 +35,9 @@ export function EmailForm() {
 }
 ```
 
-Await your API call in `onSubmit` so the submit button stays busy. See
-`form-example.tsx` for a typed example of all input components. It is a
-reference component and is not mounted on an application route.
+Await your API call in `onSubmit` so the submit button stays busy. The Athenex
+playground at `/demo/form` shows field examples and submission states.
+Demo schemas, fixtures and screens are kept outside the installable registry files.
 
 ## Values and validation
 

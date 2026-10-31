@@ -65,7 +65,6 @@
         { "path": "src/components/form/combobox-field.tsx", "type": "registry:component", "target": "components/form/combobox-field.tsx" },
         { "path": "src/components/form/date-range-field.tsx", "type": "registry:component", "target": "components/form/date-range-field.tsx" },
         { "path": "src/components/form/submit-button.tsx", "type": "registry:component", "target": "components/form/submit-button.tsx" },
-        { "path": "src/components/form/form-example.tsx", "type": "registry:component", "target": "components/form/form-example.tsx" },
         { "path": "src/components/form/README.md", "type": "registry:file", "target": "components/form/README.md" },
         { "path": "src/hooks/use-app-form.ts", "type": "registry:hook", "target": "hooks/use-app-form.ts" }
       ]

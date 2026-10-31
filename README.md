@@ -27,8 +27,9 @@ packages/core/            @athenex/web-core (TypeScript source, no build step)
   src/i18n/               breadcrumbs, enum labels, date helpers, next-intl types
   src/hooks/              useMediaQuery, useIsMobile
   src/messages/           the `ui` namespace (en, th) used by the registry components
-apps/playground/          Next app = the registry source + a demo page that mounts every item
+apps/playground/          Next app = registry source + component catalog at /demo
   registry.json           the items; `pnpm registry:build` writes public/r/*.json
+  src/demo/               isolated previews, fixtures and usage documentation
   src/components/         registry items (kebab-case files, named exports)
   src/components/ui/      shadcn primitives (base-vega), NOT published; apps keep their own
   src/styles/tokens.css   Minato brand palette (the shadcn variables), playground only
@@ -38,9 +39,14 @@ apps/playground/          Next app = the registry source + a demo page that moun
 
 ## Working on the kit
 
+For application structure, start with [apps/starter](apps/starter/README.md). It includes a
+working Tasks CRUD example, providers, app API configuration, Thai/English messages and
+dependency-boundary checks, without requiring a shared component library. Run `pnpm dev:starter`
+to try it at http://localhost:3001. Playground remains the registry source and preview.
+
 ```bash
 pnpm install
-pnpm dev              # playground at http://localhost:3000 (/demo mounts the components)
+pnpm dev              # playground at http://localhost:3000/demo (component catalog)
 pnpm check            # lint + format + typecheck both packages + build the registry
 ```
 
@@ -135,8 +141,9 @@ and finite; invalid TTLs throw `RangeError`, and repeated revocations never shor
 existing deadline. Run the auth regression checks with Node 24 or later:
 `node --test packages/core/tests/auth.test.mjs`.
 
-The quickest check that an app meets the contract: `shadcn add` every item into it and mount
-the playground's `DemoScreen`.
+The playground's `/demo/<item>` pages document each registry item's usage and dependencies.
+`pnpm registry:check` audits those declarations and keeps demo files out of installed components.
+A clean consuming-app installation still needs verification against the app contract above.
 
 ## Conventions
 

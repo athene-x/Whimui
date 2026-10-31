@@ -5,6 +5,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getLocale } from 'next-intl/server';
 import { Inter, Noto_Sans_Thai } from 'next/font/google';
 
+import { DocumentLang } from '@/components/document-lang';
 import { QueryProvider } from '@/components/query-provider';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
@@ -27,6 +28,7 @@ export default async function RootLayout({ children }: LayoutProps<'/'>) {
       style={{ ['--font-sans-app' as string]: 'var(--font-inter), var(--font-noto-thai)' }}
     >
       <body className="flex min-h-full flex-col">
+        <DocumentLang lang={locale} />
         <NextIntlClientProvider>
           <QueryProvider>
             <TooltipProvider>{children}</TooltipProvider>

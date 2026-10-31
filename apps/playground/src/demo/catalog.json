@@ -1,0 +1,128 @@
+{
+  "tokens": {
+    "group": "Foundation",
+    "description": "Semantic colors in light and dark themes. The app owns its final palette.",
+    "props": "Define all success/warning/critical/info variables for both themes; map them in Tailwind.",
+    "code": "<span className=\"bg-success-tint text-success-foreground\">Saved</span>"
+  },
+  "form": {
+    "group": "Forms",
+    "description": "Validation, disabled fields, pending submission and submit failure. Expand the extended field example below.",
+    "props": "Form: form, children. Fields: label, description, required, disabled. SubmitButton reads form state.",
+    "code": "const form = useAppForm({\n  defaultValues: { email: '' },\n  validators: { onChange: z.object({ email: z.email() }) },\n  onSubmit: async ({ value }) => { await saveEmail(value); },\n});\n<Form form={form}>\n  <form.AppField name=\"email\">\n    {(field) => <field.EmailField label=\"Email\" required />}\n  </form.AppField>\n  <form.SubmitButton />\n</Form>"
+  },
+  "data-table": {
+    "group": "Lists",
+    "description": "Search, sort, pagination and simulated loading/empty/error responses. Previous query results remain visible during page changes.",
+    "props": "table, label, isLoading, toolbar, empty, pagination, onRowClick, rowContextMenu.",
+    "code": "const query = useQuery({\n  queryKey: ['items', list.params],\n  queryFn: ({ signal }) => fetchItems(list.params, signal),\n  placeholderData: keepPreviousData,\n});\nconst table = useListTable({\n  list, columns, result: query.data,\n  isPlaceholderData: query.isPlaceholderData,\n});\n<DataTable table={table} label=\"Items\" isLoading={query.isPending} />"
+  },
+  "list-filters": {
+    "group": "Lists",
+    "description": "Search and severity filters update the list state and reset its page.",
+    "props": "ListSearchInput: list, label. ListFilterSelect: list, field, label, allLabel, options.",
+    "code": "<ListSearchInput list={list} label=\"Search\" />\n<ListFilterSelect list={list} field=\"severity\" label=\"Severity\" options={options} />"
+  },
+  "row-actions": {
+    "group": "Lists",
+    "description": "Try menu and header actions. Actions update a local status message only.",
+    "props": "actions, label, inHeader. Actions support href/onSelect, hidden, destructive and separator.",
+    "code": "<RowActions label=\"Manage item\" actions={[\n  { key: 'edit', icon: <IconPencil />, label: 'Edit', onSelect: openEditor },\n]} />"
+  },
+  "confirm-dialog": {
+    "group": "Dialogs",
+    "description": "Compare normal, disabled, pending and error states. Confirmation never deletes data here.",
+    "props": "open, title, description, confirmLabel, onConfirm, onClose; pending, disabled, error, destructive.",
+    "code": "<ConfirmDialog open={open} title=\"Delete item?\" description=\"Review before continuing.\"\n  confirmLabel=\"Delete\" destructive pending={pending} error={error}\n  onConfirm={remove} onClose={close} />"
+  },
+  "app-dialog": {
+    "group": "Dialogs",
+    "description": "Mount to open; close to unmount. No application route or API is called.",
+    "props": "title, description, className, onClose, children.",
+    "code": "{open && <AppDialog title=\"Edit item\" onClose={close}>Content</AppDialog>}"
+  },
+  "page-header": {
+    "group": "Details",
+    "description": "Title, subtitle and actions, including a long heading for layout checks.",
+    "props": "title, subtitle, children for actions.",
+    "code": "<PageHeader title=\"Users\" subtitle=\"Manage access\">\n  <Button onClick={openEditor}>Add user</Button>\n</PageHeader>"
+  },
+  "detail-list": {
+    "group": "Details",
+    "description": "Label/value pairs. Long values and missing values are app-owned decisions.",
+    "props": "DetailList: children, className. DetailItem: label, children, className.",
+    "code": "<DetailList>\n  <DetailItem label=\"Owner\">Ann Example</DetailItem>\n</DetailList>"
+  },
+  "side-panel": {
+    "group": "Details",
+    "description": "Resize the viewport: the side panel becomes a disclosure on narrow containers.",
+    "props": "SidePanelLayout: children. SidePanel: title, children.",
+    "code": "<SidePanelLayout>\n  <SidePanel title=\"Details\">Sidebar content</SidePanel>\n  <div>Main content</div>\n</SidePanelLayout>"
+  },
+  "enum-badge": {
+    "group": "Details",
+    "description": "Severity badges using the shared semantic colors.",
+    "props": "value, label, classNames; standard Badge props.",
+    "code": "<EnumBadge value=\"High\" label=\"High\" classNames={SEVERITY_CLASS_NAME} />"
+  },
+  "user-avatar": {
+    "group": "Details",
+    "description": "Initial fallback, an empty name, and a failed image URL. Hover for the full name.",
+    "props": "name, imageUrl; standard Avatar props. Requires TooltipProvider.",
+    "code": "<UserAvatar name=\"Ann Example\" imageUrl={user.imageUrl} />"
+  },
+  "permission-grid": {
+    "group": "Details",
+    "description": "Read-only grouped permissions. It displays grants; authorization belongs on the server.",
+    "props": "idPrefix, options, granted.",
+    "code": "<PermissionGrid idPrefix=\"role\" options={permissions} granted={['users:read']} />"
+  },
+  "feedback": {
+    "group": "Feedback",
+    "description": "Compare loading text, page loading, request errors and form errors.",
+    "props": "LoadError: error. ErrorAlert: message (undefined hides it). LoadingText: className.",
+    "code": "<LoadingText />\n<LoadError error={query.error} />\n<ErrorAlert message={submitError} />"
+  },
+  "status-pages": {
+    "group": "Feedback",
+    "description": "Empty, not-found and route error states. The error preview deliberately logs its sample Error.",
+    "props": "StatusPage: title, description, children. ErrorPage: error, retry. NotFoundPage: homeHref.",
+    "code": "// app/error.tsx (client module)\n<ErrorPage error={error} retry={reset} />\n// app/not-found.tsx\n<NotFoundPage homeHref=\"/\" />"
+  },
+  "session-expired-dialog": {
+    "group": "Integration",
+    "description": "Simulate the core session-expired flag. The sign-in action reloads this demo page to clear the flag; it does not authenticate.",
+    "props": "loginPath, returnToParam. Mount once under NextIntlClientProvider; browser API 401s mark the store.",
+    "code": "<SessionExpiredDialog loginPath=\"/api/auth/login\" />"
+  },
+  "logout-form": {
+    "group": "Integration",
+    "description": "Posts to a playground-only endpoint and returns here. It does not end any real session.",
+    "props": "action, className, children(pending). Real apps provide their own logout POST endpoint.",
+    "code": "<LogoutForm action=\"/api/auth/logout\">\n  {(pending) => <button type=\"submit\" disabled={pending}>Log out</button>}\n</LogoutForm>"
+  },
+  "query-provider": {
+    "group": "Integration",
+    "description": "The root layout mounts QueryProvider. Retry and invalidation below use that real provider with an in-memory query.",
+    "props": "children. Browser client is shared; server rendering creates a new client.",
+    "code": "<QueryProvider>{children}</QueryProvider>"
+  },
+  "app-link": {
+    "group": "Integration",
+    "description": "BasePathProvider prefixes internal links. These examples point to existing demo routes.",
+    "props": "AppLink: standard Next Link props. BasePathProvider: basePath, children.",
+    "code": "<BasePathProvider basePath=\"/demo\">\n  <AppLink href=\"/form\">Forms</AppLink>\n</BasePathProvider>"
+  },
+  "app-shell": {
+    "group": "Integration",
+    "description": "Full-page shell with sidebar, navigation, breadcrumb and a demo user. Logout uses a playground-only endpoint.",
+    "props": "AppShell (server): sidebar, breadcrumb, actions, children. AppSidebar: logo, homeLabel, user, children, logoutAction.",
+    "code": "<AppShell sidebar={<AppSidebar {...sidebarProps}>{navigation}</AppSidebar>}\n  breadcrumb={<AppBreadcrumb routes={routes} />} actions={<LocaleSwitcher />}>\n  {children}\n</AppShell>"
+  },
+  "locale-switcher": {
+    "group": "Integration",
+    "description": "Changes the actual playground locale cookie. Component UI messages switch between English and Thai; documentation stays English.",
+    "props": "LocaleSwitcher: no props. App must supply i18n/config.ts and i18n/actions.ts; mount DocumentLang to sync html lang.",
+    "code": "<LocaleSwitcher />\n<DocumentLang lang={locale} />"
+  }
+}

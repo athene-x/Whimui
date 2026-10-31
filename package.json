@@ -4,12 +4,14 @@
   "packageManager": "pnpm@12.15.0",
   "scripts": {
     "dev": "pnpm --filter playground dev",
+    "dev:starter": "pnpm --filter starter dev",
     "lint": "pnpm -r lint",
     "format": "pnpm -r format",
     "format:check": "pnpm -r format:check",
     "typecheck": "pnpm -r typecheck",
     "registry:build": "pnpm --filter playground registry:build",
     "tokens:check": "pnpm --filter playground tokens:check",
-    "check": "pnpm lint && pnpm format:check && pnpm typecheck && pnpm tokens:check && pnpm registry:build"
+    "check": "pnpm lint && pnpm format:check && pnpm typecheck && pnpm --filter starter test && pnpm tokens:check && pnpm registry:check && pnpm registry:build",
+    "registry:check": "pnpm --filter playground registry:check"
   }
 }
