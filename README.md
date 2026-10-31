@@ -110,6 +110,19 @@ hooks run after normalization. The default `ApiError.data` preserves the origina
 error response data. The top-level `beforeRequest` option remains supported and runs
 before `hooks.beforeRequest`.
 
+**Paged query results.** When retaining previous results with React Query, pass its
+`isPlaceholderData` flag to `useListTable` so previous results cannot correct the current
+page. Correction runs after render and requires result page/size to match the list state.
+
+```ts
+const table = useListTable({
+  list,
+  columns,
+  result: query.data,
+  isPlaceholderData: query.isPlaceholderData,
+});
+```
+
 **Server-only modules.** `@athenex/web-core/auth` uses Node `Buffer`, WebCrypto and
 `better-auth/cookies`; import it from route handlers and middleware only, and install `better-auth`
 if you import it at all. `revokeKeycloakSession` keeps its list in process memory, so it only

@@ -15,6 +15,7 @@ import {
   tableFeatures,
   useTable,
 } from '@tanstack/react-table';
+import { useEffect } from 'react';
 
 import type { OffsetPagedResult } from './list-query';
 import type { ListQuery } from './use-list-query';
@@ -53,6 +54,8 @@ export type ListTableOptions<TData extends ListTableRow, TSortField extends stri
   list: Pick<ListQuery<TSortField>, 'sort' | 'page' | 'size' | 'setSort' | 'setPagination'>;
   columns: ReadonlyArray<ColumnDef<ListTableFeatures, TData, any>>;
   result: OffsetPagedResult<TData> | undefined;
+  /** Pass React Query's `isPlaceholderData` when retaining previous query results. */
+  isPlaceholderData?: boolean;
   expanding?: ListTableExpanding<TData>;
 };
 
@@ -63,10 +66,27 @@ export function useListTable<TData extends ListTableRow, TSortField extends stri
   list,
   columns,
   result,
+  isPlaceholderData = false,
   expanding,
 }: ListTableOptions<TData, TSortField>): ListTable<TData> {
-  const lastPage = Math.max(result?.totalPages ?? list.page, 1);
-  if (list.page > lastPage) list.setPagination({ page: lastPage, size: list.size });
+  const { page, size, setPagination } = list;
+  const resultPage = result?.page;
+  const resultSize = result?.size;
+  const totalPages = result?.totalPages;
+
+  useEffect(() => {
+    if (
+      isPlaceholderData ||
+      resultPage !== page ||
+      resultSize !== size ||
+      totalPages === undefined
+    ) {
+      return;
+    }
+
+    const lastPage = Math.max(totalPages, 1);
+    if (page > lastPage) setPagination({ page: lastPage, size });
+  }, [isPlaceholderData, resultPage, resultSize, totalPages, page, size, setPagination]);
 
   const sorting = toSortingState(list.sort);
   const pagination = toPaginationState({ page: list.page, size: list.size });

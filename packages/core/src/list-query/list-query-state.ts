@@ -1,6 +1,7 @@
 import type { FilterTerm, ListQueryParams, SortTerm } from './list-query';
 
-const FIRST_PAGE = 1;
+import { FIRST_PAGE } from './list-query';
+
 const DEFAULT_SIZE = 20;
 
 export type SortDirection = 'asc' | 'desc';
@@ -51,7 +52,7 @@ export function createListQueryState<TSortField extends string, TFilterField ext
     sort: defaults.sort,
     filters: defaults.filters ?? [],
     page: FIRST_PAGE,
-    size: defaults.size ?? DEFAULT_SIZE,
+    size: normalizeSize(defaults.size),
   };
 }
 
@@ -73,16 +74,23 @@ export function listQueryReducer<TSortField extends string, TFilterField extends
         page: FIRST_PAGE,
       };
     case 'size':
-      return { ...state, size: action.size, page: FIRST_PAGE };
+      return { ...state, size: normalizeSize(action.size), page: FIRST_PAGE };
     case 'page':
       return { ...state, page: Math.max(FIRST_PAGE, action.page) };
-    case 'pagination':
-      return action.size === state.size
+    case 'pagination': {
+      const size = normalizeSize(action.size);
+      return size === state.size
         ? { ...state, page: Math.max(FIRST_PAGE, action.page) }
-        : { ...state, size: action.size, page: FIRST_PAGE };
+        : { ...state, size, page: FIRST_PAGE };
+    }
     case 'reset':
-      return action.state;
+      return { ...action.state, size: normalizeSize(action.state.size) };
   }
+}
+
+/** Invalid sizes fall back to the default; valid positive integers are preserved. */
+function normalizeSize(size: number | undefined): number {
+  return size !== undefined && Number.isInteger(size) && size > 0 ? size : DEFAULT_SIZE;
 }
 
 export function toListQueryParams<TSortField extends string, TFilterField extends string>(
