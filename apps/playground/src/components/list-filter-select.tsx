@@ -1,4 +1,4 @@
-import type { ListQuery } from '@athenex/web-core/list-query';
+import type { ListQuery } from '@whimui/core/list-query';
 
 import { FilterSelect, type FilterSelectProps } from '@/components/filter-select';
 

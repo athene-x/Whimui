@@ -9,7 +9,7 @@ import { QueryProvider } from '@/providers/query-provider';
 
 import './globals.css';
 
-export const metadata: Metadata = { title: 'Athenex starter' };
+export const metadata: Metadata = { title: 'WhimUI starter' };
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const locale = await getLocale();

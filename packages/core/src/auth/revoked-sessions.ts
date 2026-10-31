@@ -1,4 +1,4 @@
-const STORE_KEY = Symbol.for('athenex.revokedKeycloakSessions');
+const STORE_KEY = Symbol.for('whimui.revokedKeycloakSessions');
 const PRUNE_THRESHOLD = 1000;
 
 type Store = typeof globalThis & { [STORE_KEY]?: Map<string, number> };

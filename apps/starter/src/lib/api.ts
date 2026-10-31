@@ -1,3 +1,3 @@
-import { createApiClient } from '@athenex/web-core/api';
+import { createApiClient } from '@whimui/core/api';
 
 export const api = createApiClient();

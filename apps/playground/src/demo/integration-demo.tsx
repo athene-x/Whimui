@@ -1,7 +1,7 @@
 'use client';
 
-import { markSessionExpired } from '@athenex/web-core/api';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { markSessionExpired } from '@whimui/core/api';
 import { useSearchParams } from 'next/navigation';
 
 import { LogoutForm } from '@/components/logout-form';

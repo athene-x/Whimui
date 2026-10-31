@@ -3,7 +3,7 @@
   "name": "enum-badge",
   "registryDependencies": [
     "badge",
-    "@athenex/tokens"
+    "@whimui/tokens"
   ],
   "files": [
     {

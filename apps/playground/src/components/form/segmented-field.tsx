@@ -2,7 +2,7 @@
 
 import type { ReactNode } from 'react';
 
-import { useFieldContext } from '@athenex/web-core/form';
+import { useFieldContext } from '@whimui/core/form';
 
 import { cn } from '@/lib/utils';
 

@@ -1,9 +1,9 @@
 /*
- * Athenex semantic tokens: the colour contract the registry components rely on
+ * WhimUI semantic tokens: the colour contract the registry components rely on
  * (`border-critical`, `text-warning-foreground`, `bg-success-tint`, …).
  *
  * This file is the playground's copy. Apps get the same variables from the `tokens` registry
- * item (`shadcn add @athenex/tokens`), whose `cssVars` must stay identical to this file;
+ * item (`shadcn add @whimui/tokens`), whose `cssVars` must stay identical to this file;
  * `pnpm tokens:check` fails when they drift. Change both together.
  */
 :root {

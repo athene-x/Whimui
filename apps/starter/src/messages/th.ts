@@ -1,4 +1,4 @@
-import ui from '@athenex/web-core/messages/th';
+import ui from '@whimui/core/messages/th';
 
 import type en from './en';
 

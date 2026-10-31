@@ -1,6 +1,6 @@
 # Component playground
 
-This app is the Athenex registry source and component catalog. For application structure,
+This app is the WhimUI registry source and component catalog. For application structure,
 providers, feature boundaries and a real CRUD reference, use [the starter](../starter/README.md).
 
 ```bash
@@ -47,4 +47,4 @@ the logout POST redirects back without reading or changing auth cookies. These a
 not authentication integration tests. A real app must provide its own login/logout routes.
 
 Registry hosting/publishing is not configured. Installation snippets assume the consuming app has
-registered a working `@athenex` URL in components.json.
+registered a working `@whimui` URL in components.json.

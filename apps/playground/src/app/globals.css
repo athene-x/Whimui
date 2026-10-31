@@ -49,7 +49,7 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
 
-  /* Semantic tokens (semantic-tokens.css). In an app, `shadcn add @athenex/tokens` writes these. */
+  /* Semantic tokens (semantic-tokens.css). In an app, `shadcn add @whimui/tokens` writes these. */
   --color-success: var(--success);
   --color-success-tint: var(--success-tint);
   --color-success-foreground: var(--success-foreground);

@@ -63,8 +63,8 @@ export async function auditRegistry(registry, catalog, readSource) {
     return [
       item,
       ...(item.registryDependencies ?? [])
-        .filter((dependency) => dependency.startsWith('@athenex/'))
-        .flatMap((dependency) => closure(dependency.slice('@athenex/'.length), [...active, name])),
+        .filter((dependency) => dependency.startsWith('@whimui/'))
+        .flatMap((dependency) => closure(dependency.slice('@whimui/'.length), [...active, name])),
     ];
   }
 

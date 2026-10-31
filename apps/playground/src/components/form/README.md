@@ -35,7 +35,7 @@ export function EmailForm() {
 }
 ```
 
-Await your API call in `onSubmit` so the submit button stays busy. The Athenex
+Await your API call in `onSubmit` so the submit button stays busy. The WhimUI
 playground at `/demo/form` shows field examples and submission states.
 Demo schemas, fixtures and screens are kept outside the installable registry files.
 

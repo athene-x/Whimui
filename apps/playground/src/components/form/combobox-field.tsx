@@ -1,6 +1,6 @@
 'use client';
 
-import { useFieldContext } from '@athenex/web-core/form';
+import { useFieldContext } from '@whimui/core/form';
 import { useTranslations } from 'next-intl';
 import { useState, type ComponentProps, type ReactNode } from 'react';
 

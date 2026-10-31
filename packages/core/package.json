@@ -1,7 +1,7 @@
 {
-  "name": "@athenex/web-core",
+  "name": "@whimui/core",
   "version": "0.1.0",
-  "description": "Athenex standard web kit: framework-level logic shared by the Next.js apps (server-paged lists, API client, form core, Keycloak BFF helpers, ui messages).",
+  "description": "WhimUI standard web kit: framework-level logic shared by the Next.js apps (server-paged lists, API client, form core, Keycloak BFF helpers, ui messages).",
   "license": "UNLICENSED",
   "type": "module",
   "sideEffects": false,

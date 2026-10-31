@@ -1,6 +1,6 @@
 # App starter
 
-Copy this app when starting a frontend on the Athenex stack. `playground` remains the
+Copy this app when starting a frontend on the WhimUI stack. `playground` remains the
 registry preview; this app demonstrates application structure without a shared UI library.
 
 ```bash
@@ -66,7 +66,7 @@ checkable. Next's `server-only` check protects transitive server imports during 
    Add server-side authorization to every protected operation; hiding UI is not authorization.
    When adding authentication, wire the 401/session-expired flow to the app's login routes.
 4. Initialize the app's own shadcn setup and install the components it needs. Base UI is required
-   if adopting the existing Athenex registry items. Configure Tailwind/tokens and replace the demo
+   if adopting the existing WhimUI registry items. Configure Tailwind/tokens and replace the demo
    CSS. Keep UI primitives free of business dependencies.
 5. Use Tasks as the reference for the first real feature, then remove the demo routes and messages.
    Add tests for the feature's actual behavior and a production build to the app's release checks.

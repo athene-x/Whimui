@@ -2,8 +2,8 @@
 
 import type { ComponentProps, ReactNode } from 'react';
 
-import { useFieldContext } from '@athenex/web-core/form';
 import { CheckboxGroup } from '@base-ui/react/checkbox-group';
+import { useFieldContext } from '@whimui/core/form';
 
 import { Checkbox } from '@/components/ui/checkbox';
 import { FieldDescription, FieldLabel } from '@/components/ui/field';

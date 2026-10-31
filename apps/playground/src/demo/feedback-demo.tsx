@@ -1,6 +1,6 @@
 'use client';
 
-import { ApiError, apiErrorBody } from '@athenex/web-core/api';
+import { ApiError, apiErrorBody } from '@whimui/core/api';
 import { useState } from 'react';
 
 import { ErrorAlert } from '@/components/error-alert';

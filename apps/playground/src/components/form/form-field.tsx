@@ -1,11 +1,6 @@
 'use client';
 
-import {
-  describedBy,
-  isFieldInvalid,
-  toFieldErrors,
-  useFieldContext,
-} from '@athenex/web-core/form';
+import { describedBy, isFieldInvalid, toFieldErrors, useFieldContext } from '@whimui/core/form';
 import { useId, type ComponentProps, type ReactNode } from 'react';
 
 import { Field, FieldDescription, FieldError, FieldLabel } from '@/components/ui/field';

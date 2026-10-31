@@ -16,7 +16,7 @@
     "registry:check": "node scripts/check-registry.mjs && node --test scripts/check-registry.test.mjs"
   },
   "dependencies": {
-    "@athenex/web-core": "workspace:*",
+    "@whimui/core": "workspace:*",
     "@base-ui/react": "^1.9.0",
     "@shadcn/react": "^0.3.1",
     "@tabler/icons-react": "^3.49.0",

@@ -1,7 +1,7 @@
 'use client';
 
-import type { ListTable, ListTableRow } from '@athenex/web-core/list-query';
 import type { SortDirection } from '@tanstack/react-table';
+import type { ListTable, ListTableRow } from '@whimui/core/list-query';
 import type { ReactNode } from 'react';
 
 import { IconArrowDown, IconArrowUp, IconSelector } from '@tabler/icons-react';
@@ -43,7 +43,7 @@ const PINNED_CELL_CLASS_NAME =
   'z-10 bg-background transition-colors group-hover/row:bg-[color-mix(in_oklab,var(--muted)_50%,var(--background))]';
 
 /**
- * Server-paged table: `useListQuery` + `useListTable` (from `@athenex/web-core/list-query`)
+ * Server-paged table: `useListQuery` + `useListTable` (from `@whimui/core/list-query`)
  * drive sort and paging, the API answers one page at a time.
  */
 export function DataTable<TData extends ListTableRow>({

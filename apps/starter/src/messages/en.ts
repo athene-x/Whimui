@@ -1,4 +1,4 @@
-import ui from '@athenex/web-core/messages/en';
+import ui from '@whimui/core/messages/en';
 
 const en = {
   ui,

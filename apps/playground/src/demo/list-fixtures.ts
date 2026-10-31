@@ -1,4 +1,4 @@
-import type { ListQueryParams, OffsetPagedResult } from '@athenex/web-core/list-query';
+import type { ListQueryParams, OffsetPagedResult } from '@whimui/core/list-query';
 
 import type { SEVERITY_CLASS_NAME } from '@/components/enum-badge';
 

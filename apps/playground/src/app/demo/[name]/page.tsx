@@ -47,9 +47,9 @@ export default async function ComponentPage({ params }: { params: Promise<{ name
       </section>
       <section className="space-y-3">
         <h2 className="text-lg font-semibold">Install</h2>
-        <p className="text-sm">After configuring the @athenex registry URL in your app:</p>
+        <p className="text-sm">After configuring the @whimui registry URL in your app:</p>
         <pre className="overflow-x-auto rounded-lg bg-muted p-4 text-sm">
-          <code>{`pnpm dlx shadcn add @athenex/${item.name}`}</code>
+          <code>{`pnpm dlx shadcn add @whimui/${item.name}`}</code>
         </pre>
         <p className="text-sm">
           npm dependencies:{' '}

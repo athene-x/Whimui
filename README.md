@@ -1,4 +1,4 @@
-# Athenex
+# WhimUI
 
 The standard web kit for our Next.js apps (Health-Check-Up, Minato-Tracking, …): the parts
 that every app copied from the previous one, kept in one place. Nothing here is wired into an
@@ -8,8 +8,8 @@ Two kinds of things, distributed two ways:
 
 | What | Where | How an app gets it |
 | --- | --- | --- |
-| Logic with no UI: server-paged lists, API client + `ApiError`, form core, Keycloak BFF helpers, `ui` messages | `packages/core` → npm package `@athenex/web-core` | `pnpm add @athenex/web-core` + `transpilePackages` |
-| Components built on the shadcn primitives: form fields, data table, dialogs, status pages, app shell… | `apps/playground/src/components` → shadcn registry `@athenex` | `pnpm dlx shadcn add @athenex/form` (copied into the app, free to restyle) |
+| Logic with no UI: server-paged lists, API client + `ApiError`, form core, Keycloak BFF helpers, `ui` messages | `packages/core` → npm package `@whimui/core` | `pnpm add @whimui/core` + `transpilePackages` |
+| Components built on the shadcn primitives: form fields, data table, dialogs, status pages, app shell… | `apps/playground/src/components` → shadcn registry `@whimui` | `pnpm dlx shadcn add @whimui/form` (copied into the app, free to restyle) |
 
 The split follows what the two apps showed: the logic was byte-identical between them, while
 `components/ui` (buttons, cards, inputs) is restyled per app (PMK's `base-luma` theme vs
@@ -19,7 +19,7 @@ app's own copies through `registryDependencies`.
 ## Layout
 
 ```text
-packages/core/            @athenex/web-core (TypeScript source, no build step)
+packages/core/            @whimui/core (TypeScript source, no build step)
   src/list-query/         useListQuery, useListTable, list-query state/params, pageRange
   src/api/                createApiClient, ApiError, session-expired store, query defaults
   src/form/               TanStack form contexts, field-state helpers, toSubmitError/describeError
@@ -52,18 +52,18 @@ pnpm check            # lint + format + typecheck both packages + build the regi
 
 Registry source is a normal app layout, so the playground type-checks it as an app would.
 Item files import `@/components/ui/*`, `@/lib/utils`, `@/components/*` and
-`@athenex/web-core/*`; the shadcn CLI rewrites the `@/` aliases for the consuming app.
+`@whimui/core/*`; the shadcn CLI rewrites the `@/` aliases for the consuming app.
 
 ## Using it in an app (when the time comes)
 
-1. `pnpm add @athenex/web-core` and add `transpilePackages: ['@athenex/web-core']` to
+1. `pnpm add @whimui/core` and add `transpilePackages: ['@whimui/core']` to
    `next.config.ts` (the package ships `.ts` source so `'use client'` boundaries survive).
-2. Add the `ui` messages: `{ ...messages, ui: (await import('@athenex/web-core/messages/en')).default }`
+2. Add the `ui` messages: `{ ...messages, ui: (await import('@whimui/core/messages/en')).default }`
    per locale; the registry components read `useTranslations('ui')`.
 3. Register the registry in `components.json`:
-   `"registries": { "@athenex": "<registry url>/r/{name}.json" }` and
-   `pnpm dlx shadcn add @athenex/form @athenex/data-table …`.
-4. `pnpm dlx shadcn add @athenex/tokens` writes the semantic colour variables (`--success`,
+   `"registries": { "@whimui": "<registry url>/r/{name}.json" }` and
+   `pnpm dlx shadcn add @whimui/form @whimui/data-table …`.
+4. `pnpm dlx shadcn add @whimui/tokens` writes the semantic colour variables (`--success`,
    `--success-tint`, `--success-foreground`, same for `warning`, `critical`, `info`) into the
    app's `globals.css` for both themes and maps them in `@theme inline`. Items that use them
    list it in `registryDependencies`, so it also comes along on its own. Retune the values to
@@ -85,12 +85,12 @@ directly and declare it as a dependency, so a lucide app would carry both icon s
 **Files every shadcn app already has.** `@/lib/utils` exporting `cn`, and the primitives each
 item lists in `registryDependencies` (`shadcn add` installs them when missing).
 
-**Packages.** `@athenex/web-core` (see step 1 above), `next-intl`, and whatever each item lists in
+**Packages.** `@whimui/core` (see step 1 above), `next-intl`, and whatever each item lists in
 `dependencies`. The core package's peer dependencies pin the majors it was written against:
 TanStack Table v9 (not v8; the `useTable`/`tableFeatures` API differs), TanStack Query v5,
 TanStack Form v1, Zod v4, ky v2, React 19.
 
-**Messages.** The `ui` namespace from `@athenex/web-core/messages/<locale>` merged into the app's
+**Messages.** The `ui` namespace from `@whimui/core/messages/<locale>` merged into the app's
 messages for every locale (step 2 above). Items call `useTranslations('ui')` and fail at runtime
 without it.
 
@@ -128,7 +128,7 @@ const table = useListTable({
 });
 ```
 
-**Server-only modules.** `@athenex/web-core/auth` uses Node `Buffer`, WebCrypto and
+**Server-only modules.** `@whimui/core/auth` uses Node `Buffer`, WebCrypto and
 `better-auth/cookies`; import it from route handlers and middleware only, and install `better-auth`
 if you import it at all. `revokeKeycloakSession` keeps its list in process memory, so it only
 works for a single server instance.
@@ -151,4 +151,4 @@ A clean consuming-app installation still needs verification against the app cont
 - Links use `AppLink`, never `next/link` directly, so a `BasePathProvider` can prefix a zone.
 - Text in shared components comes from the `ui` namespace; apps never need to edit the kit to
   translate it, only to add a locale.
-- Components import logic from `@athenex/web-core/*`, never from each other's `lib/` copies.
+- Components import logic from `@whimui/core/*`, never from each other's `lib/` copies.

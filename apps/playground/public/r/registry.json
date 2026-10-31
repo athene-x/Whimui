@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
-  "name": "athenex",
+  "name": "whimui",
   "homepage": "https://github.com/athene-x/Athenex",
   "items": [
     {
@@ -44,8 +44,8 @@
       "type": "registry:component",
       "title": "Form fields",
       "description": "TanStack Form fields with the shared label/description/error frame, plus useAppForm.",
-      "dependencies": ["@athenex/web-core", "@tanstack/react-form", "react-number-format", "date-fns", "react-day-picker", "next-intl", "@tabler/icons-react", "@base-ui/react"],
-      "registryDependencies": ["button", "calendar", "checkbox", "combobox", "field", "input", "input-group", "native-select", "popover", "radio-group", "switch", "textarea", "@athenex/tokens"],
+      "dependencies": ["@whimui/core", "@tanstack/react-form", "react-number-format", "date-fns", "react-day-picker", "next-intl", "@tabler/icons-react", "@base-ui/react"],
+      "registryDependencies": ["button", "calendar", "checkbox", "combobox", "field", "input", "input-group", "native-select", "popover", "radio-group", "switch", "textarea", "@whimui/tokens"],
       "files": [
         { "path": "src/components/form/form.tsx", "type": "registry:component", "target": "components/form/form.tsx" },
         { "path": "src/components/form/form-field.tsx", "type": "registry:component", "target": "components/form/form-field.tsx" },
@@ -74,7 +74,7 @@
       "type": "registry:component",
       "title": "Data table",
       "description": "Server-paged table driven by useListQuery + useListTable, with pagination.",
-      "dependencies": ["@athenex/web-core", "@tanstack/react-table", "next-intl", "@tabler/icons-react"],
+      "dependencies": ["@whimui/core", "@tanstack/react-table", "next-intl", "@tabler/icons-react"],
       "registryDependencies": ["button", "context-menu", "native-select", "pagination", "table"],
       "files": [
         { "path": "src/components/data-table.tsx", "type": "registry:component" },
@@ -86,7 +86,7 @@
       "type": "registry:component",
       "title": "List filters",
       "description": "Search box and single-value filter bound to a useListQuery.",
-      "dependencies": ["@athenex/web-core", "@tabler/icons-react"],
+      "dependencies": ["@whimui/core", "@tabler/icons-react"],
       "registryDependencies": ["input-group", "native-select"],
       "files": [
         { "path": "src/components/list-search-input.tsx", "type": "registry:component" },
@@ -126,7 +126,7 @@
     {
       "name": "enum-badge",
       "type": "registry:component",
-      "registryDependencies": ["badge", "@athenex/tokens"],
+      "registryDependencies": ["badge", "@whimui/tokens"],
       "files": [{ "path": "src/components/enum-badge.tsx", "type": "registry:component" }]
     },
     {
@@ -138,14 +138,14 @@
     {
       "name": "permission-grid",
       "type": "registry:component",
-      "registryDependencies": ["checkbox", "field", "@athenex/form"],
+      "registryDependencies": ["checkbox", "field", "@whimui/form"],
       "files": [{ "path": "src/components/permission-grid.tsx", "type": "registry:component" }]
     },
     {
       "name": "row-actions",
       "type": "registry:component",
       "dependencies": ["@tabler/icons-react"],
-      "registryDependencies": ["button", "dropdown-menu", "@athenex/app-link"],
+      "registryDependencies": ["button", "dropdown-menu", "@whimui/app-link"],
       "files": [{ "path": "src/components/row-actions.tsx", "type": "registry:component" }]
     },
     {
@@ -153,7 +153,7 @@
       "type": "registry:component",
       "title": "Loading and error states",
       "description": "LoadError, LoadingText, LoadingPage, ErrorAlert.",
-      "dependencies": ["@athenex/web-core", "next-intl"],
+      "dependencies": ["@whimui/core", "next-intl"],
       "registryDependencies": ["alert", "spinner"],
       "files": [
         { "path": "src/components/load-error.tsx", "type": "registry:component" },
@@ -168,7 +168,7 @@
       "title": "Status pages",
       "description": "StatusPage, ErrorPage (error.tsx) and NotFoundPage (not-found.tsx).",
       "dependencies": ["next-intl"],
-      "registryDependencies": ["button", "empty", "@athenex/app-link"],
+      "registryDependencies": ["button", "empty", "@whimui/app-link"],
       "files": [
         { "path": "src/components/status-page.tsx", "type": "registry:component" },
         { "path": "src/components/error-page.tsx", "type": "registry:component" },
@@ -178,7 +178,7 @@
     {
       "name": "session-expired-dialog",
       "type": "registry:component",
-      "dependencies": ["@athenex/web-core", "next-intl", "@tabler/icons-react"],
+      "dependencies": ["@whimui/core", "next-intl", "@tabler/icons-react"],
       "registryDependencies": ["alert-dialog", "spinner"],
       "files": [{ "path": "src/components/session-expired-dialog.tsx", "type": "registry:component" }]
     },
@@ -190,7 +190,7 @@
     {
       "name": "query-provider",
       "type": "registry:component",
-      "dependencies": ["@athenex/web-core", "@tanstack/react-query"],
+      "dependencies": ["@whimui/core", "@tanstack/react-query"],
       "files": [{ "path": "src/components/query-provider.tsx", "type": "registry:component" }]
     },
     {
@@ -208,8 +208,8 @@
       "type": "registry:component",
       "title": "App shell",
       "description": "Sidebar + header frame: AppShell, AppSidebar, AppSidebarNav, AppBreadcrumb.",
-      "dependencies": ["@athenex/web-core", "next-intl", "@tabler/icons-react"],
-      "registryDependencies": ["breadcrumb", "dropdown-menu", "separator", "sidebar", "spinner", "@athenex/app-link", "@athenex/logout-form", "@athenex/user-avatar"],
+      "dependencies": ["@whimui/core", "next-intl", "@tabler/icons-react"],
+      "registryDependencies": ["breadcrumb", "dropdown-menu", "separator", "sidebar", "spinner", "@whimui/app-link", "@whimui/logout-form", "@whimui/user-avatar"],
       "files": [
         { "path": "src/components/app-shell.tsx", "type": "registry:component" },
         { "path": "src/components/app-sidebar.tsx", "type": "registry:component" },

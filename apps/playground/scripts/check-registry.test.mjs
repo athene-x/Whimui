@@ -26,7 +26,7 @@ const audit = (
 
 test('accepts imports satisfied by local registry dependency closure', async () => {
   const items = [
-    item('a', { registryDependencies: ['@athenex/b'] }),
+    item('a', { registryDependencies: ['@whimui/b'] }),
     item('b', { registryDependencies: ['button'], dependencies: ['next-intl'] }),
   ];
   assert.deepEqual(
@@ -66,8 +66,8 @@ test('rejects shipping demo sources and importing demo fixtures', async () => {
 test('reports missing source, unknown items, cycles and duplicate names', async () => {
   const errors = await audit(
     [
-      item('a', { registryDependencies: ['@athenex/b', '@athenex/unknown'] }),
-      item('b', { registryDependencies: ['@athenex/a'] }),
+      item('a', { registryDependencies: ['@whimui/b', '@whimui/unknown'] }),
+      item('b', { registryDependencies: ['@whimui/a'] }),
       item('b'),
     ],
     {},
@@ -77,7 +77,7 @@ test('reports missing source, unknown items, cycles and duplicate names', async 
   assert.ok(errors.some((error) => error.includes('Unknown local')));
   // Audit a separate cycle so a duplicate entry cannot replace its dependency list.
   assert.ok(
-    (await audit([item('a', { registryDependencies: ['@athenex/a'] })], {})).some((error) =>
+    (await audit([item('a', { registryDependencies: ['@whimui/a'] })], {})).some((error) =>
       error.includes('cycle'),
     ),
   );

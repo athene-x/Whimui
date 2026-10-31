@@ -2,8 +2,8 @@
 
 import type { ReactNode } from 'react';
 
-import { ApiError, STALE_TIME_MS } from '@athenex/web-core/api';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ApiError, STALE_TIME_MS } from '@whimui/core/api';
 
 const MAX_RETRIES = 2;
 

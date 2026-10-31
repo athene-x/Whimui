@@ -14,8 +14,8 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const notoThai = Noto_Sans_Thai({ subsets: ['thai', 'latin'], variable: '--font-noto-thai' });
 
 export const metadata: Metadata = {
-  title: 'Athenex playground',
-  description: 'Type-checks and previews every item of the Athenex shadcn registry.',
+  title: 'WhimUI playground',
+  description: 'Type-checks and previews every item of the WhimUI shadcn registry.',
 };
 
 export default async function RootLayout({ children }: LayoutProps<'/'>) {

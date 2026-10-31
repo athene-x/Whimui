@@ -2,7 +2,7 @@
 
 import type { ReactNode } from 'react';
 
-import { ApiError, STALE_TIME_MS } from '@athenex/web-core/api';
+import { ApiError, STALE_TIME_MS } from '@whimui/core/api';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 let browserClient: QueryClient | undefined;

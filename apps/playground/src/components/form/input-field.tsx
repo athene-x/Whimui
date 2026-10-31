@@ -2,7 +2,7 @@
 
 import type { ComponentProps } from 'react';
 
-import { useFieldContext } from '@athenex/web-core/form';
+import { useFieldContext } from '@whimui/core/form';
 
 import { Input } from '@/components/ui/input';
 

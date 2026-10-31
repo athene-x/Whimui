@@ -1,6 +1,6 @@
-import type { ListQueryParams } from '@athenex/web-core/list-query';
+import type { ListQueryParams } from '@whimui/core/list-query';
 
-import { invalidateOnSuccess } from '@athenex/web-core/api';
+import { invalidateOnSuccess } from '@whimui/core/api';
 import { keepPreviousData, mutationOptions, queryOptions } from '@tanstack/react-query';
 
 import { createTask, deleteTask, listTasks, updateTask } from './api';

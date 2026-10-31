@@ -15,7 +15,7 @@
     "check": "pnpm lint && pnpm format:check && pnpm typecheck && pnpm test"
   },
   "dependencies": {
-    "@athenex/web-core": "workspace:*",
+    "@whimui/core": "workspace:*",
     "@tanstack/react-form": "^1.33.5",
     "@tanstack/react-query": "^5.105.0",
     "@tanstack/react-table": "^9.3.1",

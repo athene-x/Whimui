@@ -10,7 +10,7 @@ import { SidebarGroup, SidebarMenu } from '@/components/ui/sidebar';
 export function DemoSidebar() {
   return (
     <AppSidebar
-      logo={<span className="font-semibold">Athenex previews</span>}
+      logo={<span className="font-semibold">WhimUI previews</span>}
       homeLabel="Playground"
       user={{ displayName: 'Demo user', subtitle: 'Local preview only' }}
       logoutAction="/demo/logout"

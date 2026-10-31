@@ -2,7 +2,7 @@ import {
   toListSearchParams,
   type ListQueryParams,
   type OffsetPagedResult,
-} from '@athenex/web-core/list-query';
+} from '@whimui/core/list-query';
 
 import { api } from '@/lib/api';
 

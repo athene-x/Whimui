@@ -4,7 +4,7 @@
   "registryDependencies": [
     "checkbox",
     "field",
-    "@athenex/form"
+    "@whimui/form"
   ],
   "files": [
     {

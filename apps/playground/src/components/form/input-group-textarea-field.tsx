@@ -2,7 +2,7 @@
 
 import type { ComponentProps, ReactNode } from 'react';
 
-import { useFieldContext } from '@athenex/web-core/form';
+import { useFieldContext } from '@whimui/core/form';
 
 import { InputGroup, InputGroupAddon, InputGroupTextarea } from '@/components/ui/input-group';
 
