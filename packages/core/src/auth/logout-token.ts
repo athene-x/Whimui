@@ -3,6 +3,7 @@ import { type Jwt, parseJwt } from './jwt';
 const BACKCHANNEL_LOGOUT_EVENT = 'http://schemas.openid.net/event/backchannel-logout';
 const JWKS_TTL_MS = 10 * 60 * 1000;
 const MAX_TOKEN_AGE_SECONDS = 5 * 60;
+const CLOCK_SKEW_SECONDS = 60;
 
 type Header = { alg?: string; kid?: string };
 
@@ -43,6 +44,9 @@ export async function verifyLogoutToken(
   const jwt = parseJwt<Header, Claims>(token);
   if (!jwt) throw new LogoutTokenError('malformed token');
   if (jwt.header.alg !== 'RS256') throw new LogoutTokenError(`unsupported alg ${jwt.header.alg}`);
+  if (jwt.header.kid !== undefined && !isNonEmptyString(jwt.header.kid)) {
+    throw new LogoutTokenError('invalid key id');
+  }
 
   if (!(await hasValidSignature(jwt, verifier.jwksUrl))) {
     throw new LogoutTokenError('bad signature');
@@ -56,16 +60,36 @@ function checkClaims(claims: Claims, { issuer, clientId }: LogoutTokenVerifier):
   const audiences = Array.isArray(claims.aud) ? claims.aud : [claims.aud];
 
   if (claims.iss !== issuer) throw new LogoutTokenError('wrong issuer');
-  if (!audiences.includes(clientId)) throw new LogoutTokenError('wrong audience');
-  if (typeof claims.iat !== 'number' || now - claims.iat > MAX_TOKEN_AGE_SECONDS) {
+  if (!audiences.every(isNonEmptyString) || !audiences.includes(clientId)) {
+    throw new LogoutTokenError('wrong audience');
+  }
+  if (typeof claims.iat !== 'number' || !Number.isFinite(claims.iat)) {
+    throw new LogoutTokenError('invalid issued-at time');
+  }
+  if (now - claims.iat > MAX_TOKEN_AGE_SECONDS) {
     throw new LogoutTokenError('token too old');
   }
-  if (claims.exp !== undefined && claims.exp < now) throw new LogoutTokenError('token expired');
-  if (claims.nonce !== undefined) throw new LogoutTokenError('nonce not allowed');
-  if (!claims.events || !(BACKCHANNEL_LOGOUT_EVENT in claims.events)) {
+  if (claims.iat > now + CLOCK_SKEW_SECONDS) {
+    throw new LogoutTokenError('token issued in the future');
+  }
+  if (claims.exp !== undefined) {
+    if (typeof claims.exp !== 'number' || !Number.isFinite(claims.exp)) {
+      throw new LogoutTokenError('invalid expiration time');
+    }
+    if (claims.exp <= now) throw new LogoutTokenError('token expired');
+  }
+  if ('nonce' in claims) throw new LogoutTokenError('nonce not allowed');
+  if (
+    !isRecord(claims.events) ||
+    !Object.hasOwn(claims.events, BACKCHANNEL_LOGOUT_EVENT) ||
+    !isRecord(claims.events[BACKCHANNEL_LOGOUT_EVENT])
+  ) {
     throw new LogoutTokenError('not a logout event');
   }
-  if (!claims.sid) throw new LogoutTokenError('sid missing');
+  if (!isNonEmptyString(claims.sid)) throw new LogoutTokenError('sid missing or invalid');
+  if (claims.sub !== undefined && !isNonEmptyString(claims.sub)) {
+    throw new LogoutTokenError('invalid subject');
+  }
 
   return { sid: claims.sid, sub: claims.sub ?? null };
 }
@@ -108,7 +132,12 @@ async function findJwk(
   const { keys } = options?.refresh ? await refreshJwks(jwksUrl) : await currentJwks(jwksUrl);
 
   return keys.find(
-    (key) => key.kty === 'RSA' && key.use !== 'enc' && (kid === undefined || key.kid === kid),
+    (key) =>
+      key.kty === 'RSA' &&
+      (key.use === undefined || key.use === 'sig') &&
+      (key.alg === undefined || key.alg === 'RS256') &&
+      (key.key_ops === undefined || key.key_ops.includes('verify')) &&
+      (kid === undefined || key.kid === kid),
   );
 }
 
@@ -128,6 +157,35 @@ async function fetchJwks(jwksUrl: URL | string): Promise<Jwk[]> {
   const response = await fetch(jwksUrl, { cache: 'no-store' });
   if (!response.ok) throw new Error(`JWKS request failed with ${response.status}`);
 
-  const body = (await response.json()) as { keys?: Jwk[] };
-  return body.keys ?? [];
+  const body: unknown = await response.json();
+  if (!isRecord(body) || !Array.isArray(body.keys) || !body.keys.every(isJwk)) {
+    throw new LogoutTokenError('invalid JWKS response');
+  }
+  return body.keys;
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function isNonEmptyString(value: unknown): value is string {
+  return typeof value === 'string' && value.length > 0;
+}
+
+function isJwk(value: unknown): value is Jwk {
+  if (!isRecord(value) || !isNonEmptyString(value.kty)) return false;
+  if (
+    !['kid', 'use', 'alg'].every(
+      (field) => value[field] === undefined || isNonEmptyString(value[field]),
+    )
+  ) {
+    return false;
+  }
+  if (
+    value.key_ops !== undefined &&
+    (!Array.isArray(value.key_ops) || !value.key_ops.every(isNonEmptyString))
+  ) {
+    return false;
+  }
+  return value.kty !== 'RSA' || (isNonEmptyString(value.n) && isNonEmptyString(value.e));
 }

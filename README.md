@@ -127,6 +127,14 @@ const table = useListTable({
 if you import it at all. `revokeKeycloakSession` keeps its list in process memory, so it only
 works for a single server instance.
 
+JWT decode helpers require three base64url segments and object header/payload, but do not
+verify signatures or claims. The logout verifier allows up to 60 seconds of future `iat`
+clock skew. For compatibility, `exp` and `jti` are not required yet; `exp` is validated when
+present, and `jti` replay detection is not implemented. Revocation TTLs must be positive
+and finite; invalid TTLs throw `RangeError`, and repeated revocations never shorten the
+existing deadline. Run the auth regression checks with Node 24 or later:
+`node --test packages/core/tests/auth.test.mjs`.
+
 The quickest check that an app meets the contract: `shadcn add` every item into it and mount
 the playground's `DemoScreen`.
 
