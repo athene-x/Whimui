@@ -3,7 +3,7 @@
 import type { Icon } from '@tabler/icons-react';
 import type { ComponentProps, ReactNode } from 'react';
 
-import { useFieldContext } from '@whimui/core/form';
+import { useFieldContext } from '@athene-x/whimui/form';
 
 import {
   Field,

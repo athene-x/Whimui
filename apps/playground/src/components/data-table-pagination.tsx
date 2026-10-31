@@ -1,7 +1,7 @@
 'use client';
 
+import { type ListTable, type ListTableRow, pageRange } from '@athene-x/whimui/list-query';
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
-import { type ListTable, type ListTableRow, pageRange } from '@whimui/core/list-query';
 import { useTranslations } from 'next-intl';
 
 import { Button } from '@/components/ui/button';

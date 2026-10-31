@@ -1,4 +1,4 @@
-import ui from '@whimui/core/messages/en';
+import ui from '@athene-x/whimui/messages/en';
 
 const en = {
   ui,

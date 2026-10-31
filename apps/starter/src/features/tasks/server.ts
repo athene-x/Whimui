@@ -1,6 +1,6 @@
 import 'server-only';
 
-import type { ApiErrorBody } from '@whimui/core/api';
+import type { ApiErrorBody } from '@athene-x/whimui/api';
 
 import { taskInputSchema, type Task, type TaskInput } from './schemas';
 

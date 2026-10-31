@@ -75,7 +75,7 @@ test('HTTP calls and client configuration stay in adapters', () => {
   assert.deepEqual(
     check(
       'lib/api.ts',
-      "import { createApiClient } from '@whimui/core/api'; const api = createApiClient();",
+      "import { createApiClient } from '@athene-x/whimui/api'; const api = createApiClient();",
     ),
     [],
   );

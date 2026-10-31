@@ -13,7 +13,7 @@ function fixture() {
     items: [
       {
         name: 'form',
-        dependencies: ['@whimui/core', 'zod'],
+        dependencies: ['@athene-x/whimui', 'zod'],
         registryDependencies: ['@whimui/tokens'],
       },
       { name: 'tokens', type: 'registry:theme' },
@@ -27,14 +27,14 @@ test('pins core in every release item and index, preserving namespaced dependenc
   const { registry, generated } = fixture();
   const files = releaseFiles(registry, generated, '0.2.0', '0.1.1');
   const form = JSON.parse(files.get('form.json'));
-  assert.deepEqual(form.dependencies, ['@whimui/core@0.1.1', 'zod']);
+  assert.deepEqual(form.dependencies, ['@athene-x/whimui@0.1.1', 'zod']);
   assert.deepEqual(form.registryDependencies, ['@whimui/tokens']);
   assert.equal(
     JSON.parse(files.get('registry.json')).items[0].dependencies[0],
-    '@whimui/core@0.1.1',
+    '@athene-x/whimui@0.1.1',
   );
-  assert.equal(registry.items[0].dependencies[0], '@whimui/core');
-  assert.equal(generated.get('form').dependencies[0], '@whimui/core');
+  assert.equal(registry.items[0].dependencies[0], '@athene-x/whimui');
+  assert.equal(generated.get('form').dependencies[0], '@athene-x/whimui');
   const manifest = JSON.parse(files.get('release-manifest.json'));
   assert.equal(manifest.version, '0.2.0');
   assert.equal(manifest.core.version, '0.1.1');

@@ -2,13 +2,13 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "query-provider",
   "dependencies": [
-    "@whimui/core@0.1.0",
+    "@athene-x/whimui@0.1.0",
     "@tanstack/react-query"
   ],
   "files": [
     {
       "path": "src/components/query-provider.tsx",
-      "content": "'use client';\n\nimport type { ReactNode } from 'react';\n\nimport { QueryClient, QueryClientProvider } from '@tanstack/react-query';\nimport { ApiError, STALE_TIME_MS } from '@whimui/core/api';\n\nconst MAX_RETRIES = 2;\n\nlet browserQueryClient: QueryClient | undefined;\n\nfunction createQueryClient() {\n  return new QueryClient({\n    defaultOptions: {\n      queries: {\n        staleTime: STALE_TIME_MS,\n        // Retry network blips, never a 4xx the API meant.\n        retry: (failureCount, error) =>\n          failureCount < MAX_RETRIES &&\n          !(error instanceof ApiError && error.status >= 400 && error.status < 500),\n      },\n    },\n  });\n}\n\nfunction getQueryClient() {\n  if (typeof window === 'undefined') return createQueryClient();\n  browserQueryClient ??= createQueryClient();\n  return browserQueryClient;\n}\n\nexport function QueryProvider({ children }: { children: ReactNode }) {\n  return <QueryClientProvider client={getQueryClient()}>{children}</QueryClientProvider>;\n}\n",
+      "content": "'use client';\n\nimport type { ReactNode } from 'react';\n\nimport { QueryClient, QueryClientProvider } from '@tanstack/react-query';\nimport { ApiError, STALE_TIME_MS } from '@athene-x/whimui/api';\n\nconst MAX_RETRIES = 2;\n\nlet browserQueryClient: QueryClient | undefined;\n\nfunction createQueryClient() {\n  return new QueryClient({\n    defaultOptions: {\n      queries: {\n        staleTime: STALE_TIME_MS,\n        // Retry network blips, never a 4xx the API meant.\n        retry: (failureCount, error) =>\n          failureCount < MAX_RETRIES &&\n          !(error instanceof ApiError && error.status >= 400 && error.status < 500),\n      },\n    },\n  });\n}\n\nfunction getQueryClient() {\n  if (typeof window === 'undefined') return createQueryClient();\n  browserQueryClient ??= createQueryClient();\n  return browserQueryClient;\n}\n\nexport function QueryProvider({ children }: { children: ReactNode }) {\n  return <QueryClientProvider client={getQueryClient()}>{children}</QueryClientProvider>;\n}\n",
       "type": "registry:component"
     }
   ],

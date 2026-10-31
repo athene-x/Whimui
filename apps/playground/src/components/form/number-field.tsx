@@ -1,6 +1,6 @@
 'use client';
 
-import { useFieldContext } from '@whimui/core/form';
+import { useFieldContext } from '@athene-x/whimui/form';
 import {
   NumericFormat,
   PatternFormat,

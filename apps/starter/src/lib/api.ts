@@ -1,3 +1,3 @@
-import { createApiClient } from '@whimui/core/api';
+import { createApiClient } from '@athene-x/whimui/api';
 
 export const api = createApiClient();

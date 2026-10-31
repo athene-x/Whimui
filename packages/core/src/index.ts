@@ -1,4 +1,4 @@
-// Browser-safe modules. Server helpers live in '@whimui/core/auth'.
+// Browser-safe modules. Server helpers live in '@athene-x/whimui/auth'.
 export * from './api';
 export * from './form';
 export * from './hooks';

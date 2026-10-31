@@ -1,7 +1,7 @@
 'use client';
 
+import { fieldContext, formContext } from '@athene-x/whimui/form';
 import { createFormHook } from '@tanstack/react-form';
-import { fieldContext, formContext } from '@whimui/core/form';
 
 import { CheckboxGroupField } from '@/components/form/checkbox-group-field';
 import { ComboboxField } from '@/components/form/combobox-field';

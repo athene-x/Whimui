@@ -1,6 +1,6 @@
 'use client';
 
-import { type BreadcrumbRoute, buildBreadcrumbs } from '@whimui/core/i18n';
+import { type BreadcrumbRoute, buildBreadcrumbs } from '@athene-x/whimui/i18n';
 import { usePathname } from 'next/navigation';
 import { Fragment } from 'react';
 

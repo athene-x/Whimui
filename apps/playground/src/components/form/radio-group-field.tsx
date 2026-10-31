@@ -2,7 +2,7 @@
 
 import type { ComponentProps, ReactNode } from 'react';
 
-import { useFieldContext } from '@whimui/core/form';
+import { useFieldContext } from '@athene-x/whimui/form';
 
 import { FieldLabel } from '@/components/ui/field';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';

@@ -1,6 +1,6 @@
 # WhimUI changesets
 
-Run `pnpm changeset` when a change needs a release. Select `@whimui/core` for package API
+Run `pnpm changeset` when a change needs a release. Select `@athene-x/whimui` for package API
 changes and `@whimui/registry` for installable component/dependency changes. The latter is
 private metadata for the source registry, not an npm UI library. Do not select the private
 playground/starter applications for kit releases.

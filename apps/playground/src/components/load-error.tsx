@@ -1,6 +1,6 @@
 'use client';
 
-import { toSubmitError } from '@whimui/core/form';
+import { toSubmitError } from '@athene-x/whimui/form';
 import { useTranslations } from 'next-intl';
 
 import { Alert, AlertDescription } from '@/components/ui/alert';

@@ -2,7 +2,7 @@
 
 import type { ComponentProps } from 'react';
 
-import { useFieldContext } from '@whimui/core/form';
+import { useFieldContext } from '@athene-x/whimui/form';
 
 import { Textarea } from '@/components/ui/textarea';
 

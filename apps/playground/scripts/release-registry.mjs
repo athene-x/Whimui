@@ -18,8 +18,8 @@ function assertVersion(version) {
 function pinDependencies(item, coreVersion) {
   if (item.dependencies)
     item.dependencies = item.dependencies.map((dependency) =>
-      dependency === '@whimui/core' || dependency.startsWith('@whimui/core@')
-        ? `@whimui/core@${coreVersion}`
+      dependency === '@athene-x/whimui' || dependency.startsWith('@athene-x/whimui@')
+        ? `@athene-x/whimui@${coreVersion}`
         : dependency,
     );
   return item;
@@ -54,7 +54,7 @@ export function releaseFiles(registry, generated, version, coreVersion) {
     encode({
       name: '@whimui/registry',
       version,
-      core: { name: '@whimui/core', version: coreVersion },
+      core: { name: '@athene-x/whimui', version: coreVersion },
       sha256: hashes,
     }),
   );

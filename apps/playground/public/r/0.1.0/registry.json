@@ -45,7 +45,7 @@
       "title": "Form fields",
       "description": "TanStack Form fields with the shared label/description/error frame, plus useAppForm.",
       "dependencies": [
-        "@whimui/core@0.1.0",
+        "@athene-x/whimui@0.1.0",
         "@tanstack/react-form",
         "react-number-format",
         "date-fns",
@@ -178,7 +178,7 @@
       "title": "Data table",
       "description": "Server-paged table driven by useListQuery + useListTable, with pagination.",
       "dependencies": [
-        "@whimui/core@0.1.0",
+        "@athene-x/whimui@0.1.0",
         "@tanstack/react-table",
         "next-intl",
         "@tabler/icons-react"
@@ -207,7 +207,7 @@
       "title": "List filters",
       "description": "Search box and single-value filter bound to a useListQuery.",
       "dependencies": [
-        "@whimui/core@0.1.0",
+        "@athene-x/whimui@0.1.0",
         "@tabler/icons-react"
       ],
       "registryDependencies": [
@@ -358,7 +358,7 @@
       "title": "Loading and error states",
       "description": "LoadError, LoadingText, LoadingPage, ErrorAlert.",
       "dependencies": [
-        "@whimui/core@0.1.0",
+        "@athene-x/whimui@0.1.0",
         "next-intl"
       ],
       "registryDependencies": [
@@ -416,7 +416,7 @@
       "name": "session-expired-dialog",
       "type": "registry:component",
       "dependencies": [
-        "@whimui/core@0.1.0",
+        "@athene-x/whimui@0.1.0",
         "next-intl",
         "@tabler/icons-react"
       ],
@@ -445,7 +445,7 @@
       "name": "query-provider",
       "type": "registry:component",
       "dependencies": [
-        "@whimui/core@0.1.0",
+        "@athene-x/whimui@0.1.0",
         "@tanstack/react-query"
       ],
       "files": [
@@ -477,7 +477,7 @@
       "title": "App shell",
       "description": "Sidebar + header frame: AppShell, AppSidebar, AppSidebarNav, AppBreadcrumb.",
       "dependencies": [
-        "@whimui/core@0.1.0",
+        "@athene-x/whimui@0.1.0",
         "next-intl",
         "@tabler/icons-react"
       ],

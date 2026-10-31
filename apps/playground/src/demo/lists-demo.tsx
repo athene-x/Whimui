@@ -1,13 +1,13 @@
 'use client';
 
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { ApiError, apiErrorBody } from '@whimui/core/api';
+import { ApiError, apiErrorBody } from '@athene-x/whimui/api';
 import {
   type ColumnDef,
   type ListTableFeatures,
   useListQuery,
   useListTable,
-} from '@whimui/core/list-query';
+} from '@athene-x/whimui/list-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { DataTable } from '@/components/data-table';

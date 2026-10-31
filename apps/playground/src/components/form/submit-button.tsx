@@ -2,7 +2,7 @@
 
 import type { ComponentProps, ReactNode } from 'react';
 
-import { useFormContext } from '@whimui/core/form';
+import { useFormContext } from '@athene-x/whimui/form';
 import { useTranslations } from 'next-intl';
 
 import { Button } from '@/components/ui/button';

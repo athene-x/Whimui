@@ -172,6 +172,9 @@ importers:
 
   apps/playground:
     dependencies:
+      '@athene-x/whimui':
+        specifier: workspace:*
+        version: link:../../packages/core
       '@base-ui/react':
         specifier: ^1.9.0
         version: 1.9.0(@date-fns/tz@1.5.0)(@types/react@19.3.0)(date-fns@4.4.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
@@ -190,9 +193,6 @@ importers:
       '@tanstack/react-table':
         specifier: ^9.3.1
         version: 9.3.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
-      '@whimui/core':
-        specifier: workspace:*
-        version: link:../../packages/core
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -281,6 +281,9 @@ importers:
 
   apps/starter:
     dependencies:
+      '@athene-x/whimui':
+        specifier: workspace:*
+        version: link:../../packages/core
       '@tanstack/react-form':
         specifier: ^1.33.5
         version: 1.33.5(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
@@ -290,9 +293,6 @@ importers:
       '@tanstack/react-table':
         specifier: ^9.3.1
         version: 9.3.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
-      '@whimui/core':
-        specifier: workspace:*
-        version: link:../../packages/core
       ky:
         specifier: ^2.2.0
         version: 2.2.0

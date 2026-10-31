@@ -2,7 +2,7 @@
 
 import type { ComponentProps, ReactNode } from 'react';
 
-import { useFieldContext } from '@whimui/core/form';
+import { useFieldContext } from '@athene-x/whimui/form';
 
 import { InputGroup, InputGroupAddon, InputGroupTextarea } from '@/components/ui/input-group';
 

@@ -1,12 +1,12 @@
 'use client';
 
-import { describeError } from '@whimui/core/form';
+import { describeError } from '@athene-x/whimui/form';
 import {
   useListQuery,
   useListTable,
   type ColumnDef,
   type ListTableFeatures,
-} from '@whimui/core/list-query';
+} from '@athene-x/whimui/list-query';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';

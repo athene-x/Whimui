@@ -1,6 +1,6 @@
 'use client';
 
-import { toSubmitError } from '@whimui/core/form';
+import { toSubmitError } from '@athene-x/whimui/form';
 import { useMutation } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';

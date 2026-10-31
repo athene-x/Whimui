@@ -1,7 +1,7 @@
 'use client';
 
+import { isSessionExpired, subscribeSessionExpired } from '@athene-x/whimui/api';
 import { IconClockExclamation } from '@tabler/icons-react';
-import { isSessionExpired, subscribeSessionExpired } from '@whimui/core/api';
 import { useTranslations } from 'next-intl';
 import { useState, useSyncExternalStore } from 'react';
 

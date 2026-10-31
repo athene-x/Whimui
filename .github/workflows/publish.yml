@@ -1,0 +1,32 @@
+name: Publish core to GitHub Packages
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          registry-url: https://npm.pkg.github.com
+          scope: '@athene-x'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check
+      - run: node --test packages/core/tests/auth.test.mjs
+      - name: Publish versions without a release tag
+        run: pnpm release:publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push release tags
+        run: git push --follow-tags

@@ -1,4 +1,4 @@
-import type { ListQuery } from '@whimui/core/list-query';
+import type { ListQuery } from '@athene-x/whimui/list-query';
 
 import { IconSearch } from '@tabler/icons-react';
 

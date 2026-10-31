@@ -1,4 +1,4 @@
-import ui from '@whimui/core/messages/th';
+import ui from '@athene-x/whimui/messages/th';
 
 import type en from './en';
 

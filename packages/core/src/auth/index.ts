@@ -1,5 +1,5 @@
 // Server-side only (Node Buffer, WebCrypto, Better Auth cookies). Import from
-// '@whimui/core/auth', never from the package root.
+// '@athene-x/whimui/auth', never from the package root.
 export * from './auth-cookies';
 export * from './jwt';
 export * from './keycloak';

@@ -2,7 +2,7 @@ import {
   toListSearchParams,
   type ListQueryParams,
   type OffsetPagedResult,
-} from '@whimui/core/list-query';
+} from '@athene-x/whimui/list-query';
 
 import { api } from '@/lib/api';
 

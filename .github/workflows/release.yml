@@ -27,7 +27,7 @@ jobs:
       - run: node --test packages/core/tests/auth.test.mjs
       - name: Pack core without publishing
         if: inputs.target != 'registry'
-        run: pnpm --filter @whimui/core pack --pack-destination .release/core
+        run: pnpm --filter @athene-x/whimui pack --pack-destination .release/core
       - name: Build registry snapshot
         if: inputs.target != 'core'
         run: pnpm registry:release

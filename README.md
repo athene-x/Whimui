@@ -8,7 +8,7 @@ Two kinds of things, distributed two ways:
 
 | What | Where | How an app gets it |
 | --- | --- | --- |
-| Logic with no UI: server-paged lists, API client + `ApiError`, form core, Keycloak BFF helpers, `ui` messages | `packages/core` → npm package `@whimui/core` | `pnpm add @whimui/core` + `transpilePackages` |
+| Logic with no UI: server-paged lists, API client + `ApiError`, form core, Keycloak BFF helpers, `ui` messages | `packages/core` → npm package `@athene-x/whimui` | `pnpm add @athene-x/whimui` + `transpilePackages` |
 | Components built on the shadcn primitives: form fields, data table, dialogs, status pages, app shell… | `apps/playground/src/components` → shadcn registry `@whimui` | `pnpm dlx shadcn add @whimui/form` (copied into the app, free to restyle) |
 
 The split follows what the two apps showed: the logic was byte-identical between them, while
@@ -19,7 +19,7 @@ app's own copies through `registryDependencies`.
 ## Layout
 
 ```text
-packages/core/            @whimui/core (TypeScript source, no build step)
+packages/core/            @athene-x/whimui (TypeScript source, no build step)
   src/list-query/         useListQuery, useListTable, list-query state/params, pageRange
   src/api/                createApiClient, ApiError, session-expired store, query defaults
   src/form/               TanStack form contexts, field-state helpers, toSubmitError/describeError
@@ -57,13 +57,13 @@ pnpm check            # lint + format + typecheck both packages + build the regi
 
 Registry source is a normal app layout, so the playground type-checks it as an app would.
 Item files import `@/components/ui/*`, `@/lib/utils`, `@/components/*` and
-`@whimui/core/*`; the shadcn CLI rewrites the `@/` aliases for the consuming app.
+`@athene-x/whimui/*`; the shadcn CLI rewrites the `@/` aliases for the consuming app.
 
 ## Using it in an app (when the time comes)
 
-1. `pnpm add @whimui/core` and add `transpilePackages: ['@whimui/core']` to
+1. `pnpm add @athene-x/whimui` and add `transpilePackages: ['@athene-x/whimui']` to
    `next.config.ts` (the package ships `.ts` source so `'use client'` boundaries survive).
-2. Add the `ui` messages: `{ ...messages, ui: (await import('@whimui/core/messages/en')).default }`
+2. Add the `ui` messages: `{ ...messages, ui: (await import('@athene-x/whimui/messages/en')).default }`
    per locale; the registry components read `useTranslations('ui')`.
 3. Register the registry in `components.json`:
    `"registries": { "@whimui": "<registry url>/r/{name}.json" }` and
@@ -90,12 +90,12 @@ directly and declare it as a dependency, so a lucide app would carry both icon s
 **Files every shadcn app already has.** `@/lib/utils` exporting `cn`, and the primitives each
 item lists in `registryDependencies` (`shadcn add` installs them when missing).
 
-**Packages.** `@whimui/core` (see step 1 above), `next-intl`, and whatever each item lists in
+**Packages.** `@athene-x/whimui` (see step 1 above), `next-intl`, and whatever each item lists in
 `dependencies`. The core package's peer dependencies pin the majors it was written against:
 TanStack Table v9 (not v8; the `useTable`/`tableFeatures` API differs), TanStack Query v5,
 TanStack Form v1, Zod v4, ky v2, React 19.
 
-**Messages.** The `ui` namespace from `@whimui/core/messages/<locale>` merged into the app's
+**Messages.** The `ui` namespace from `@athene-x/whimui/messages/<locale>` merged into the app's
 messages for every locale (step 2 above). Items call `useTranslations('ui')` and fail at runtime
 without it.
 
@@ -133,7 +133,7 @@ const table = useListTable({
 });
 ```
 
-**Server-only modules.** `@whimui/core/auth` uses Node `Buffer`, WebCrypto and
+**Server-only modules.** `@athene-x/whimui/auth` uses Node `Buffer`, WebCrypto and
 `better-auth/cookies`; import it from route handlers and middleware only, and install `better-auth`
 if you import it at all. `revokeKeycloakSession` keeps its list in process memory, so it only
 works for a single server instance.
@@ -156,4 +156,4 @@ A clean consuming-app installation still needs verification against the app cont
 - Links use `AppLink`, never `next/link` directly, so a `BasePathProvider` can prefix a zone.
 - Text in shared components comes from the `ui` namespace; apps never need to edit the kit to
   translate it, only to add a locale.
-- Components import logic from `@whimui/core/*`, never from each other's `lib/` copies.
+- Components import logic from `@athene-x/whimui/*`, never from each other's `lib/` copies.

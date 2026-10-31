@@ -4,7 +4,7 @@ Core and components have independent versions, managed by Changesets:
 
 | Release | Version source | Distribution |
 | --- | --- | --- |
-| `@whimui/core` | `packages/core/package.json` | Private npm registry; TypeScript source, no build |
+| `@athene-x/whimui` | `packages/core/package.json` | GitHub Packages (`npm.pkg.github.com`), `athene-x` org; TypeScript source, no build |
 | `@whimui/registry` | `packages/registry/package.json` | Immutable JSON under `/r/<version>/`; never npm-published |
 
 The registry workspace is version metadata only. Source components stay in playground.
@@ -31,12 +31,12 @@ pnpm changeset
 pnpm release:status
 ```
 
-Select `@whimui/core`, `@whimui/registry`, or both, then enter the bump and a useful change
+Select `@athene-x/whimui`, `@whimui/registry`, or both, then enter the bump and a useful change
 summary. Commit the generated `.changeset/*.md` with the implementation. For example:
 
 ```md
 ---
-'@whimui/core': patch
+'@athene-x/whimui': patch
 '@whimui/registry': patch
 ---
 
@@ -74,7 +74,7 @@ apps/playground/public/r/0.1.0/
   release-manifest.json
 ```
 
-Each item's `@whimui/core` npm dependency is pinned to the current core version. The manifest
+Each item's `@athene-x/whimui` npm dependency is pinned to the current core version. The manifest
 records registry/core versions and SHA-256 hashes. Rebuilding identical files is allowed;
 changed content under the same version is rejected. Bump the registry version instead.
 Stable `x.y.z` versions are supported; prerelease registry snapshots are not implemented yet.
@@ -111,9 +111,23 @@ review installed changes. Updating a package does not update previously copied c
 
 ## Publish and host
 
-Configure the chosen private npm registry and authentication before running:
+Core publishes to GitHub Packages under the `athene-x` organization. GitHub Packages requires
+the npm scope to equal the organization login, and the `repository` field in
+`packages/core/package.json` must point at the repository that owns the package. The root
+`.npmrc` maps the `@athene-x` scope to `https://npm.pkg.github.com`; authentication is never
+committed.
+
+Publish from CI by running **Publish core to GitHub Packages** manually on the commit that
+contains the versioned `main`. It runs checks, publishes every core version that has no
+release tag yet using the workflow's `GITHUB_TOKEN`, and pushes the tags. The organization's
+Actions settings must grant workflows read and write permissions, and members must be allowed
+to create packages.
+
+To publish locally instead, create a classic personal access token with `write:packages`,
+add it to your user config, then run:
 
 ```bash
+echo '//npm.pkg.github.com/:_authToken=<token>' >> ~/.npmrc
 pnpm release:publish
 git push --follow-tags
 ```
@@ -122,13 +136,14 @@ Changesets publishes the non-private core package and creates package release ta
 registry workspace is private and only receives version handling. If releasing a registry
 snapshot, create an annotated tag for its committed version (for example,
 `git tag -a @whimui/registry@0.1.0 -m "WhimUI registry 0.1.0"`)
-before pushing tags. Private application versions are not automatically tagged. `access` defaults to
-`restricted`; no registry destination, token, or hosting service is configured by this setup.
-Do not use the publish command until the destination and package access are configured.
+before pushing tags. Private application versions are not automatically tagged. `access` stays
+`restricted`; GitHub Packages visibility follows the repository.
 
-Publish core before consumers install a snapshot that pins it. Upload registry snapshots to
-your authenticated host with an append-only policy; the local overwrite check does not protect
-against someone replacing files directly on the host. Keep tokens in environment/CI secrets.
+Consumers need the same scope line in their own `.npmrc` and a token with `read:packages`,
+because GitHub Packages does not serve anonymous installs. Publish core before consumers
+install a snapshot that pins it. Upload registry snapshots to your authenticated host with an
+append-only policy; the local overwrite check does not protect against someone replacing files
+directly on the host. Keep tokens in environment/CI secrets.
 
 ## Prepare artifacts in GitHub Actions
 
