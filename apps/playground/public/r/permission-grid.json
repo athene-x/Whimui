@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "permission-grid",
+  "registryDependencies": [
+    "checkbox",
+    "field",
+    "@athenex/form"
+  ],
+  "files": [
+    {
+      "path": "src/components/permission-grid.tsx",
+      "content": "import { CHECKBOX_GROUP_LAYOUTS, groupOptions } from '@/components/form/checkbox-group-options';\nimport { Checkbox } from '@/components/ui/checkbox';\nimport { FieldDescription, FieldLabel } from '@/components/ui/field';\n\nexport type PermissionOption = {\n  value: string;\n  label: string;\n  description?: string;\n  group?: string;\n};\n\nexport type PermissionGridProps = {\n  idPrefix: string;\n  options: readonly PermissionOption[];\n  granted: readonly string[];\n};\n\n/** Read-only view of a role's permissions, laid out like the role form's checkbox grid. */\nexport function PermissionGrid({ idPrefix, options, granted }: PermissionGridProps) {\n  return (\n    <div className={CHECKBOX_GROUP_LAYOUTS.grid.groups}>\n      {groupOptions(options).map((group) => (\n        <div key={group.name} className={CHECKBOX_GROUP_LAYOUTS.grid.group}>\n          <p className=\"text-sm font-medium text-muted-foreground\">{group.name}</p>\n          {group.options.map((option) => {\n            const optionId = `${idPrefix}-${option.value}`;\n\n            return (\n              <div key={option.value} className=\"flex items-start gap-2\">\n                <Checkbox\n                  id={optionId}\n                  className=\"mt-0.5\"\n                  checked={granted.includes(option.value)}\n                  disabled\n                />\n                <div className=\"flex flex-col gap-0.5\">\n                  <FieldLabel htmlFor={optionId}>{option.label}</FieldLabel>\n                  {option.description && (\n                    <FieldDescription className=\"text-xs\">{option.description}</FieldDescription>\n                  )}\n                </div>\n              </div>\n            );\n          })}\n        </div>\n      ))}\n    </div>\n  );\n}\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "list-filters",
+  "title": "List filters",
+  "description": "Search box and single-value filter bound to a useListQuery.",
+  "dependencies": [
+    "@athenex/web-core"
+  ],
+  "registryDependencies": [
+    "input-group",
+    "native-select"
+  ],
+  "files": [
+    {
+      "path": "src/components/list-search-input.tsx",
+      "content": "import type { ListQuery } from '@athenex/web-core/list-query';\n\nimport { IconSearch } from '@tabler/icons-react';\n\nimport { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group';\n\nexport type ListSearchInputProps = {\n  list: Pick<ListQuery, 'searchInput' | 'setSearchInput'>;\n  label: string;\n  placeholder?: string;\n  className?: string;\n};\n\n/** Debounced free-text search bound to a `useListQuery` (the API's `searchTerm`). */\nexport function ListSearchInput({\n  list,\n  label,\n  placeholder = label,\n  className,\n}: ListSearchInputProps) {\n  return (\n    <InputGroup className={className}>\n      <InputGroupAddon>\n        <IconSearch />\n      </InputGroupAddon>\n      <InputGroupInput\n        type=\"search\"\n        aria-label={label}\n        placeholder={placeholder}\n        value={list.searchInput}\n        onChange={(event) => list.setSearchInput(event.target.value)}\n      />\n    </InputGroup>\n  );\n}\n",
+      "type": "registry:component"
+    },
+    {
+      "path": "src/components/list-filter-select.tsx",
+      "content": "import type { ListQuery } from '@athenex/web-core/list-query';\n\nimport { FilterSelect, type FilterSelectProps } from '@/components/filter-select';\n\nexport type ListFilterSelectProps<TField extends string> = Omit<\n  FilterSelectProps,\n  'value' | 'onChange'\n> & {\n  list: Pick<ListQuery<string, TField>, 'getFilter' | 'setFilter'>;\n  field: TField;\n};\n\n/** Single-value filter bound to a `useListQuery` field (sent as `field:in:value`). */\nexport function ListFilterSelect<TField extends string>({\n  list,\n  field,\n  ...props\n}: ListFilterSelectProps<TField>) {\n  return (\n    <FilterSelect\n      {...props}\n      value={list.getFilter(field)[0] ?? ''}\n      onChange={(value) => list.setFilter(field, value ? [value] : [])}\n    />\n  );\n}\n",
+      "type": "registry:component"
+    },
+    {
+      "path": "src/components/filter-select.tsx",
+      "content": "import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select';\n\nexport type FilterOption = {\n  value: string;\n  label: string;\n};\n\nexport type FilterSelectProps = {\n  label: string;\n  allLabel: string;\n  options: readonly FilterOption[] | undefined;\n  value: string;\n  onChange: (value: string) => void;\n  className?: string;\n};\n\n/** Single-value filter as a native `<select>`, with an \"all\" option that clears it. */\nexport function FilterSelect({\n  label,\n  allLabel,\n  options,\n  value,\n  onChange,\n  className,\n}: FilterSelectProps) {\n  return (\n    <NativeSelect\n      className={className}\n      aria-label={label}\n      value={value}\n      onChange={(event) => onChange(event.target.value)}\n    >\n      <NativeSelectOption value=\"\">{allLabel}</NativeSelectOption>\n      {options?.map((option) => (\n        <NativeSelectOption key={option.value} value={option.value}>\n          {option.label}\n        </NativeSelectOption>\n      ))}\n    </NativeSelect>\n  );\n}\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

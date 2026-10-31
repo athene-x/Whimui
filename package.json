@@ -1,0 +1,14 @@
+{
+  "name": "athenex",
+  "private": true,
+  "packageManager": "pnpm@12.15.0",
+  "scripts": {
+    "dev": "pnpm --filter playground dev",
+    "lint": "pnpm -r lint",
+    "format": "pnpm -r format",
+    "format:check": "pnpm -r format:check",
+    "typecheck": "pnpm -r typecheck",
+    "registry:build": "pnpm --filter playground registry:build",
+    "check": "pnpm lint && pnpm format:check && pnpm typecheck && pnpm registry:build"
+  }
+}

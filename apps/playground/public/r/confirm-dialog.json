@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "confirm-dialog",
+  "dependencies": [
+    "next-intl"
+  ],
+  "registryDependencies": [
+    "alert-dialog"
+  ],
+  "files": [
+    {
+      "path": "src/components/confirm-dialog.tsx",
+      "content": "'use client';\n\nimport type { ReactNode } from 'react';\n\nimport { useTranslations } from 'next-intl';\n\nimport {\n  AlertDialog,\n  AlertDialogAction,\n  AlertDialogCancel,\n  AlertDialogContent,\n  AlertDialogDescription,\n  AlertDialogFooter,\n  AlertDialogHeader,\n  AlertDialogTitle,\n} from '@/components/ui/alert-dialog';\n\nexport type ConfirmDialogProps = {\n  open: boolean;\n  title: ReactNode;\n  description: ReactNode;\n  confirmLabel: string;\n  destructive?: boolean;\n  pending?: boolean;\n  /** Keeps the confirm button disabled, e.g. until a required reason is typed. */\n  disabled?: boolean;\n  error?: string;\n  /** Extra controls between the description and the buttons (e.g. a reason field). */\n  children?: ReactNode;\n  onConfirm: () => void;\n  onClose: () => void;\n};\n\n/** \"Are you sure?\" dialog for a row action; shows the request error inline and stays open on failure. */\nexport function ConfirmDialog({\n  open,\n  title,\n  description,\n  confirmLabel,\n  destructive = false,\n  pending = false,\n  disabled = false,\n  error,\n  children,\n  onConfirm,\n  onClose,\n}: ConfirmDialogProps) {\n  const t = useTranslations('ui');\n\n  return (\n    <AlertDialog open={open} onOpenChange={(next) => !next && onClose()}>\n      <AlertDialogContent>\n        <AlertDialogHeader>\n          <AlertDialogTitle>{title}</AlertDialogTitle>\n          <AlertDialogDescription>{description}</AlertDialogDescription>\n        </AlertDialogHeader>\n        {children}\n        {error && (\n          <p role=\"alert\" className=\"text-sm text-destructive\">\n            {error}\n          </p>\n        )}\n        <AlertDialogFooter>\n          <AlertDialogCancel disabled={pending}>{t('actions.cancel')}</AlertDialogCancel>\n          <AlertDialogAction\n            variant={destructive ? 'destructive' : 'default'}\n            disabled={pending || disabled}\n            aria-busy={pending}\n            onClick={onConfirm}\n          >\n            {pending ? t('status.processing') : confirmLabel}\n          </AlertDialogAction>\n        </AlertDialogFooter>\n      </AlertDialogContent>\n    </AlertDialog>\n  );\n}\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}
