@@ -230,13 +230,6 @@
         { "path": "src/components/language-switcher-menu.tsx", "type": "registry:component" },
         { "path": "src/components/document-lang.tsx", "type": "registry:component" }
       ]
-    },
-    {
-      "name": "bulk-rows-editor",
-      "type": "registry:component",
-      "dependencies": ["@athenex/web-core", "next-intl", "read-excel-file", "@tabler/icons-react"],
-      "registryDependencies": ["alert", "badge", "button", "input", "table", "@athenex/app-link", "@athenex/form"],
-      "files": [{ "path": "src/components/bulk-rows-editor.tsx", "type": "registry:component" }]
     }
   ]
 }

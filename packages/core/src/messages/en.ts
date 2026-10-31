@@ -80,30 +80,6 @@ const uiEn = {
     action: 'Log in again',
     redirecting: 'Redirecting to login…',
   },
-  bulk: {
-    downloadTemplates: 'Download a sample <csv>CSV</csv> or <xlsx>Excel</xlsx> file.',
-    importFromFile: 'Load from file',
-    fileLabel: 'File to load',
-    readFailed: 'Could not read the file. Please use a .csv or .xlsx file.',
-    tooManyRows: 'You can add at most {max} rows at a time',
-    line: '#',
-    outcome: 'Result',
-    actions: 'Actions',
-    cellLabel: '{column}, row {line}',
-    addRow: 'Add row',
-    removeRow: 'Remove row {line}',
-    removeInvalid: 'Remove {count, plural, =1 {# invalid row} other {# invalid rows}}',
-    ready: '{count, plural, =1 {# row} other {# rows}} ready',
-    result: '{done} succeeded, {failed} failed, out of {total} sent',
-    fixIssues:
-      '{count, plural, =1 {# row has} other {# rows have}} invalid data. Fix or remove it first.',
-    stopped: 'Stopped after {processed} of {total} rows.',
-    noResult: 'No result was returned for this row',
-    waiting: 'Waiting',
-    submitting: 'Sending {processed}/{total}…',
-    retry: 'Retry {count, plural, =1 {# failed row} other {# failed rows}}',
-    allDone: 'Every row went through.',
-  },
 };
 
 export type UiMessages = typeof uiEn;

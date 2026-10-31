@@ -8,7 +8,7 @@ Two kinds of things, distributed two ways:
 
 | What | Where | How an app gets it |
 | --- | --- | --- |
-| Logic with no UI: server-paged lists, API client + `ApiError`, form core, Keycloak BFF helpers, bulk import, `ui` messages | `packages/core` → npm package `@athenex/web-core` | `pnpm add @athenex/web-core` + `transpilePackages` |
+| Logic with no UI: server-paged lists, API client + `ApiError`, form core, Keycloak BFF helpers, `ui` messages | `packages/core` → npm package `@athenex/web-core` | `pnpm add @athenex/web-core` + `transpilePackages` |
 | Components built on the shadcn primitives: form fields, data table, dialogs, status pages, app shell… | `apps/playground/src/components` → shadcn registry `@athenex` | `pnpm dlx shadcn add @athenex/form` (copied into the app, free to restyle) |
 
 The split follows what the two apps showed: the logic was byte-identical between them, while
@@ -24,7 +24,6 @@ packages/core/            @athenex/web-core (TypeScript source, no build step)
   src/api/                createApiClient, ApiError, session-expired store, query defaults
   src/form/               TanStack form contexts, field-state helpers, toSubmitError/describeError
   src/auth/               (server only) jwt, Keycloak URLs, back-channel logout token, revoked sessions
-  src/bulk/               bulk rows + CSV/XLSX import helpers
   src/i18n/               breadcrumbs, enum labels, date helpers, next-intl types
   src/hooks/              useMediaQuery, useIsMobile
   src/messages/           the `ui` namespace (en, th) used by the registry components
