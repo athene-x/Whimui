@@ -102,6 +102,14 @@ other items do not need them.
 adds the bearer token); `SessionExpiredDialog` links to `/api/auth/login?returnTo=…`;
 `LogoutForm` posts to `/api/auth/logout`. Each is a prop or option if the app's routes differ.
 
+**API configuration.** `createApiClient` accepts native Ky options, including headers,
+credentials, timeouts, retries, and hooks. Retries default to `0` so React Query can own
+the retry policy. Use `normalizeError(state)` to adapt another backend's error format;
+the browser's `onUnauthorized` callback still runs first on a 401. App `beforeError`
+hooks run after normalization. The default `ApiError.data` preserves the original HTTP
+error response data. The top-level `beforeRequest` option remains supported and runs
+before `hooks.beforeRequest`.
+
 **Server-only modules.** `@athenex/web-core/auth` uses Node `Buffer`, WebCrypto and
 `better-auth/cookies`; import it from route handlers and middleware only, and install `better-auth`
 if you import it at all. `revokeKeycloakSession` keeps its list in process memory, so it only

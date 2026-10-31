@@ -3,6 +3,7 @@ import ky, {
   type BeforeRequestState,
   type Hooks,
   type KyInstance,
+  type Options,
   isHTTPError,
   isNetworkError,
   isTimeoutError,
@@ -37,12 +38,14 @@ export class ApiError extends Error {
   readonly status: number;
   readonly code: string;
   readonly errors: ApiErrorDetail[];
+  readonly data: unknown;
 
-  constructor(status: number, body: ApiErrorBody, options?: ErrorOptions) {
+  constructor(status: number, body: ApiErrorBody, options?: ErrorOptions & { data?: unknown }) {
     super(body.description, options);
     this.status = status;
     this.code = body.code;
     this.errors = body.errors ?? [];
+    this.data = options?.data;
   }
 }
 
@@ -55,47 +58,68 @@ export function apiErrorBody(code: string, description: string): ApiErrorBody {
   return { code, description, errors: null };
 }
 
-export type ApiClientOptions = {
-  /** Defaults to `/api/v1`: the app's own BFF route that forwards to the API. */
-  prefix?: string;
-  /** Extra `beforeRequest` hooks, e.g. one that adds a tenant header from the URL. */
+export type ApiClientOptions = Options & {
+  /** Runs before `hooks.beforeRequest`; retained for existing callers. */
   beforeRequest?: NonNullable<Hooks['beforeRequest']>;
   /**
    * Runs in the browser on a 401; by default marks the session expired so a
    * `SessionExpiredDialog` can offer the login again.
    */
   onUnauthorized?: () => void;
+  /** Replaces the default error normalization; app `beforeError` hooks run afterward. */
+  normalizeError?: (state: BeforeErrorState) => Error | Promise<Error>;
 };
 
 /**
- * Browser-side client. Every call goes to `<prefix>/*` on this app; the BFF route adds the
- * bearer token and passes the request on to the API. Feature code never builds URLs itself.
+ * Creates a Ky client with API error handling. Defaults to the app's `/api/v1` BFF
+ * and no retries; callers can override native Ky options and add hooks.
  */
 export function createApiClient({
-  prefix = API_PREFIX,
   beforeRequest = [],
   onUnauthorized = markSessionExpired,
+  normalizeError = toApiError,
+  hooks = {},
+  ...options
 }: ApiClientOptions = {}): KyInstance {
   return ky.create({
-    prefix,
+    prefix: API_PREFIX,
     retry: 0,
+    ...options,
     hooks: {
-      beforeRequest,
-      beforeError: [(state) => toApiError(state, onUnauthorized)],
+      ...hooks,
+      beforeRequest: [...beforeRequest, ...(hooks.beforeRequest ?? [])],
+      beforeError: [
+        (state) => {
+          notifyUnauthorized(state, onUnauthorized);
+          return normalizeError(state);
+        },
+        ...(hooks.beforeError ?? []),
+      ],
     },
   });
 }
 
 export type { BeforeRequestState };
 
-export function toApiError({ error }: BeforeErrorState, onUnauthorized?: () => void): Error {
+function notifyUnauthorized({ error }: BeforeErrorState, onUnauthorized?: () => void): void {
+  if (
+    isHTTPError(error) &&
+    error.response.status === UNAUTHORIZED &&
+    typeof window !== 'undefined'
+  ) {
+    onUnauthorized?.();
+  }
+}
+
+export function toApiError(state: BeforeErrorState, onUnauthorized?: () => void): Error {
+  const { error } = state;
   if (isHTTPError(error)) {
     const { status } = error.response;
-    if (status === UNAUTHORIZED && typeof window !== 'undefined') onUnauthorized?.();
+    notifyUnauthorized(state, onUnauthorized);
     const body = isApiErrorBody(error.data)
       ? error.data
       : apiErrorBody('Web.UnexpectedResponse', `The API answered ${status} without an error body.`);
-    return new ApiError(status, body, { cause: error });
+    return new ApiError(status, body, { cause: error, data: error.data });
   }
 
   if (isTimeoutError(error)) {
@@ -118,6 +142,21 @@ export function isApiErrorBody(data: unknown): data is ApiErrorBody {
     'code' in data &&
     typeof data.code === 'string' &&
     'description' in data &&
-    typeof data.description === 'string'
+    typeof data.description === 'string' &&
+    'errors' in data &&
+    (data.errors === null || (Array.isArray(data.errors) && data.errors.every(isApiErrorDetail)))
+  );
+}
+
+function isApiErrorDetail(data: unknown): data is ApiErrorDetail {
+  return (
+    typeof data === 'object' &&
+    data !== null &&
+    'code' in data &&
+    typeof data.code === 'string' &&
+    'description' in data &&
+    typeof data.description === 'string' &&
+    'field' in data &&
+    (data.field === null || typeof data.field === 'string')
   );
 }
