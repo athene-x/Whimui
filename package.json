@@ -9,6 +9,7 @@
     "format:check": "pnpm -r format:check",
     "typecheck": "pnpm -r typecheck",
     "registry:build": "pnpm --filter playground registry:build",
-    "check": "pnpm lint && pnpm format:check && pnpm typecheck && pnpm registry:build"
+    "tokens:check": "pnpm --filter playground tokens:check",
+    "check": "pnpm lint && pnpm format:check && pnpm typecheck && pnpm tokens:check && pnpm registry:build"
   }
 }

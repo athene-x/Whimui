@@ -5,7 +5,8 @@
   "description": "Sidebar + header frame: AppShell, AppSidebar, AppSidebarNav, AppBreadcrumb.",
   "dependencies": [
     "@athenex/web-core",
-    "next-intl"
+    "next-intl",
+    "@tabler/icons-react"
   ],
   "registryDependencies": [
     "breadcrumb",

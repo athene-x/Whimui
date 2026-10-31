@@ -4,7 +4,8 @@
   "title": "Locale switcher",
   "description": "Header and sidebar language menus (expects src/i18n/config.ts and actions.ts).",
   "dependencies": [
-    "next-intl"
+    "next-intl",
+    "@tabler/icons-react"
   ],
   "registryDependencies": [
     "button",

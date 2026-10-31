@@ -4,7 +4,8 @@
   "dependencies": [
     "@athenex/web-core",
     "next-intl",
-    "read-excel-file"
+    "read-excel-file",
+    "@tabler/icons-react"
   ],
   "registryDependencies": [
     "alert",

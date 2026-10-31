@@ -1,6 +1,9 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "side-panel",
+  "dependencies": [
+    "@tabler/icons-react"
+  ],
   "files": [
     {
       "path": "src/components/side-panel.tsx",

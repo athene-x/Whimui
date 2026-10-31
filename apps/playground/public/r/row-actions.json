@@ -1,6 +1,9 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "row-actions",
+  "dependencies": [
+    "@tabler/icons-react"
+  ],
   "registryDependencies": [
     "button",
     "dropdown-menu",

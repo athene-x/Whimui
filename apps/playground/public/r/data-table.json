@@ -6,7 +6,8 @@
   "dependencies": [
     "@athenex/web-core",
     "@tanstack/react-table",
-    "next-intl"
+    "next-intl",
+    "@tabler/icons-react"
   ],
   "registryDependencies": [
     "button",

@@ -2,6 +2,7 @@
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
 @import '../styles/tokens.css';
+@import '../styles/semantic-tokens.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -48,11 +49,7 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
 
-  --color-hairline: var(--hairline);
-  --color-placeholder: var(--placeholder);
-  --color-primary-hover: var(--primary-hover);
-  --color-destructive-tint: var(--destructive-tint);
-  --color-destructive-border: var(--destructive-border);
+  /* Semantic tokens (semantic-tokens.css). In an app, `shadcn add @athenex/tokens` writes these. */
   --color-success: var(--success);
   --color-success-tint: var(--success-tint);
   --color-success-foreground: var(--success-foreground);

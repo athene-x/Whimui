@@ -2,7 +2,8 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "enum-badge",
   "registryDependencies": [
-    "badge"
+    "badge",
+    "@athenex/tokens"
   ],
   "files": [
     {

@@ -9,7 +9,9 @@
     "react-number-format",
     "date-fns",
     "react-day-picker",
-    "next-intl"
+    "next-intl",
+    "@tabler/icons-react",
+    "@base-ui/react"
   ],
   "registryDependencies": [
     "button",
@@ -23,7 +25,8 @@
     "popover",
     "radio-group",
     "switch",
-    "textarea"
+    "textarea",
+    "@athenex/tokens"
   ],
   "files": [
     {

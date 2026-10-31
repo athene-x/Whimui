@@ -11,7 +11,8 @@
     "format:check": "oxfmt ./src --check",
     "typecheck": "next typegen && tsc --noEmit",
     "registry:build": "shadcn build --output public/r",
-    "check": "pnpm lint && pnpm format:check && pnpm typecheck && pnpm registry:build"
+    "tokens:check": "node scripts/check-tokens.mjs",
+    "check": "pnpm lint && pnpm format:check && pnpm typecheck && pnpm tokens:check && pnpm registry:build"
   },
   "dependencies": {
     "@athenex/web-core": "workspace:*",

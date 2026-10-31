@@ -4,7 +4,8 @@
   "title": "List filters",
   "description": "Search box and single-value filter bound to a useListQuery.",
   "dependencies": [
-    "@athenex/web-core"
+    "@athenex/web-core",
+    "@tabler/icons-react"
   ],
   "registryDependencies": [
     "input-group",

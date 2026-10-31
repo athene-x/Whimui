@@ -3,7 +3,8 @@
   "name": "session-expired-dialog",
   "dependencies": [
     "@athenex/web-core",
-    "next-intl"
+    "next-intl",
+    "@tabler/icons-react"
   ],
   "registryDependencies": [
     "alert-dialog",
