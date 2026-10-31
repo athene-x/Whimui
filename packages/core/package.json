@@ -5,7 +5,7 @@
   "license": "UNLICENSED",
   "repository": {
     "type": "git",
-    "url": "https://github.com/athene-x/Whimui.git",
+    "url": "git+https://github.com/athene-x/Whimui.git",
     "directory": "packages/core"
   },
   "publishConfig": {
