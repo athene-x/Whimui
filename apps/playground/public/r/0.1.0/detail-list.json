@@ -1,0 +1,12 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "detail-list",
+  "files": [
+    {
+      "path": "src/components/detail-list.tsx",
+      "content": "import type { ReactNode } from 'react';\n\nimport { cn } from '@/lib/utils';\n\nexport type DetailListProps = {\n  className?: string;\n  children: ReactNode;\n};\n\n/** Label/value pairs of a detail page, two columns from the `@2xl` container width. */\nexport function DetailList({ className, children }: DetailListProps) {\n  return <dl className={cn('grid gap-x-6 gap-y-3 @2xl:grid-cols-2', className)}>{children}</dl>;\n}\n\nexport type DetailItemProps = {\n  label: ReactNode;\n  className?: string;\n  children: ReactNode;\n};\n\nexport function DetailItem({ label, className, children }: DetailItemProps) {\n  return (\n    <div className={className}>\n      <dt className=\"text-sm text-muted-foreground\">{label}</dt>\n      <dd className=\"text-sm\">{children}</dd>\n    </div>\n  );\n}\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

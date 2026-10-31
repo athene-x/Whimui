@@ -1,0 +1,50 @@
+name: Prepare release artifacts
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Artifacts to prepare from the committed versions
+        type: choice
+        options: [both, core, registry]
+        default: both
+
+permissions:
+  contents: read
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check
+      - run: node --test packages/core/tests/auth.test.mjs
+      - name: Pack core without publishing
+        if: inputs.target != 'registry'
+        run: pnpm --filter @whimui/core pack --pack-destination .release/core
+      - name: Build registry snapshot
+        if: inputs.target != 'core'
+        run: pnpm registry:release
+      - name: Read registry version
+        id: registry
+        if: inputs.target != 'core'
+        run: node -e "const fs = require('node:fs'); const pkg = require('./packages/registry/package.json'); fs.appendFileSync(process.env.GITHUB_OUTPUT, 'version=' + pkg.version + '\n');"
+      - uses: actions/upload-artifact@v4
+        if: inputs.target != 'registry'
+        with:
+          name: whimui-core
+          path: .release/core/*.tgz
+          include-hidden-files: true
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        if: inputs.target != 'core'
+        with:
+          name: whimui-registry-${{ steps.registry.outputs.version }}
+          path: apps/playground/public/r/${{ steps.registry.outputs.version }}/
+          if-no-files-found: error

@@ -12,6 +12,14 @@
     "registry:build": "pnpm --filter playground registry:build",
     "tokens:check": "pnpm --filter playground tokens:check",
     "check": "pnpm lint && pnpm format:check && pnpm typecheck && pnpm --filter starter test && pnpm tokens:check && pnpm registry:check && pnpm registry:build",
-    "registry:check": "pnpm --filter playground registry:check"
+    "registry:check": "pnpm --filter playground registry:check",
+    "changeset": "changeset",
+    "release:status": "changeset status",
+    "release:version": "changeset version && pnpm install --lockfile-only --ignore-scripts",
+    "release:publish": "changeset publish",
+    "registry:release": "pnpm --filter playground registry:release"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^3.0.3"
   }
 }

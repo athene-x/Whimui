@@ -13,7 +13,8 @@
     "registry:build": "shadcn build --output public/r",
     "tokens:check": "node scripts/check-tokens.mjs",
     "check": "pnpm lint && pnpm format:check && pnpm typecheck && pnpm tokens:check && pnpm registry:check && pnpm registry:build",
-    "registry:check": "node scripts/check-registry.mjs && node --test scripts/check-registry.test.mjs"
+    "registry:check": "node scripts/check-registry.mjs && node --test scripts/check-registry.test.mjs scripts/release-registry.test.mjs",
+    "registry:release": "pnpm registry:check && node scripts/release-registry.mjs"
   },
   "dependencies": {
     "@whimui/core": "workspace:*",

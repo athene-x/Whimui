@@ -39,6 +39,11 @@ apps/playground/          Next app = registry source + component catalog at /dem
 
 ## Working on the kit
 
+Versioning and release preparation are documented in [docs/releases.md](docs/releases.md).
+Use `pnpm changeset` to record a core/registry change, `pnpm release:version` to update versions
+and changelogs, and `pnpm registry:release` to build an immutable registry snapshot. Publishing
+and hosting still require your chosen private registry and credentials.
+
 For application structure, start with [apps/starter](apps/starter/README.md). It includes a
 working Tasks CRUD example, providers, app API configuration, Thai/English messages and
 dependency-boundary checks, without requiring a shared component library. Run `pnpm dev:starter`

@@ -1,0 +1,32 @@
+{
+  "name": "@whimui/registry",
+  "version": "0.1.0",
+  "core": {
+    "name": "@whimui/core",
+    "version": "0.1.0"
+  },
+  "sha256": {
+    "app-dialog.json": "688cc5d22b1a63978a2199b159f5c886b90ae750bcfb4e2fcb45fb627f6ec5ae",
+    "app-link.json": "4ef0fc00eead3762c242d02817ba3b5b05e41d647748b4b78ad4a269a8acdd29",
+    "app-shell.json": "518408f324ad9a63728702be12bcfe584c0b68e0fbe7e5def8039eee6255fe93",
+    "confirm-dialog.json": "861a66859f07f3eb382ca6d40797d6dcfcaac031077b28da3231f75000d1f640",
+    "data-table.json": "6fffac63830a8e964c562a7e67a18acf3185e7e8c98c3ea301f7d7b5e311b081",
+    "detail-list.json": "88f94fcab26ddb33ed2ae4ff8f189f8026ef04f446f3c00de81035cdeb9c30de",
+    "enum-badge.json": "7b64f28389718444a2081d66311cb4de092ff28e6f0922cc6baf7e83ae7a4c2b",
+    "feedback.json": "7a7c498ddd76d75ea37905dda0d7ca90d64ece4e13c90bff93b58db42be564f4",
+    "form.json": "a88555a88ae0cdb0cf8c23dc747eba3f69d0ec28b7a8e2e388e86c7bd94e0cf9",
+    "list-filters.json": "9884be57d91614e55d45df69bfa077f1bea4ca57f48af89d9ae11aabf1747d16",
+    "locale-switcher.json": "058530e2cd97a4c23b35b5f65a0a1c3830f7aae614c982ab7d1d8f2c6ba2d014",
+    "logout-form.json": "2a4b72e1c488f2726144743223d87baa7f813bd899426ebdaaa785d96f9fee5e",
+    "page-header.json": "acb6e5c52092564902abed28f3d575075e0d059dfb3c8dbae6e3dff0d5d64317",
+    "permission-grid.json": "ec4c03e979ff25a6d55f1e7cac0d6b0f93441b1e0a229ecf1b42c0985de4f3aa",
+    "query-provider.json": "625d614ac606111861687d453b25bdc3fbad4df38238986e4e1438c712c947c6",
+    "registry.json": "9ed71f21a34ea05db47c15677787cec28030fd85f9dcde01093c4bfcd535972f",
+    "row-actions.json": "f9b63dd42b95a861688035872a4d23697851dfe1e25e25f6b5a1fe00f9dae631",
+    "session-expired-dialog.json": "82a71e56cb5b4259334ecbf55f0bc367f68cc61d4cb14697e4403450443c2d3a",
+    "side-panel.json": "53c88b4462261b0ddabad814685fda2ab80a839ee7d586b2b1e4f8712f34b524",
+    "status-pages.json": "63fd6542e3968279fce652417cb831cb212256660a1dafcd1d2d1b6defb90d53",
+    "tokens.json": "cd9817101043692a4e304319414ca859dc3296f00d904475d2f21877a7be48fd",
+    "user-avatar.json": "80dc9be9a246aa83696715b92b626b4aeda0ccc9d9b0e9bc1013371daf74b90f"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "status-pages",
+  "title": "Status pages",
+  "description": "StatusPage, ErrorPage (error.tsx) and NotFoundPage (not-found.tsx).",
+  "dependencies": [
+    "next-intl"
+  ],
+  "registryDependencies": [
+    "button",
+    "empty",
+    "@whimui/app-link"
+  ],
+  "files": [
+    {
+      "path": "src/components/status-page.tsx",
+      "content": "import type { ReactNode } from 'react';\n\nimport {\n  Empty,\n  EmptyContent,\n  EmptyDescription,\n  EmptyHeader,\n  EmptyTitle,\n} from '@/components/ui/empty';\n\nexport type StatusPageProps = {\n  title: string;\n  description: ReactNode;\n  children?: ReactNode;\n};\n\n/** Centered title + description + optional actions: the body of error, not-found and empty pages. */\nexport function StatusPage({ title, description, children }: StatusPageProps) {\n  return (\n    <Empty>\n      <EmptyHeader>\n        <EmptyTitle>{title}</EmptyTitle>\n        <EmptyDescription>{description}</EmptyDescription>\n      </EmptyHeader>\n      {children && <EmptyContent>{children}</EmptyContent>}\n    </Empty>\n  );\n}\n",
+      "type": "registry:component"
+    },
+    {
+      "path": "src/components/error-page.tsx",
+      "content": "'use client';\n\nimport { useTranslations } from 'next-intl';\nimport { useEffect } from 'react';\n\nimport { StatusPage } from '@/components/status-page';\nimport { Button } from '@/components/ui/button';\n\nexport type ErrorPageProps = {\n  error: Error & { digest?: string };\n  retry: () => void;\n};\n\n/** Body of a route's `error.tsx`: `<ErrorPage error={error} retry={reset} />`. */\nexport function ErrorPage({ error, retry }: ErrorPageProps) {\n  const t = useTranslations('ui');\n\n  useEffect(() => {\n    console.error(error);\n  }, [error]);\n\n  return (\n    <StatusPage title={t('errorPage.title')} description={t('errorPage.description')}>\n      <Button onClick={retry}>{t('actions.retry')}</Button>\n    </StatusPage>\n  );\n}\n",
+      "type": "registry:component"
+    },
+    {
+      "path": "src/components/not-found-page.tsx",
+      "content": "import { useTranslations } from 'next-intl';\n\nimport { AppLink } from '@/components/app-link';\nimport { StatusPage } from '@/components/status-page';\nimport { Button } from '@/components/ui/button';\n\nexport type NotFoundPageProps = {\n  homeHref?: string;\n};\n\n/** Body of a route's `not-found.tsx`. */\nexport function NotFoundPage({ homeHref = '/' }: NotFoundPageProps) {\n  const t = useTranslations('ui');\n\n  return (\n    <StatusPage title={t('notFound.title')} description={t('notFound.description')}>\n      <Button nativeButton={false} render={<AppLink href={homeHref} />}>\n        {t('notFound.home')}\n      </Button>\n    </StatusPage>\n  );\n}\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

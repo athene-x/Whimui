@@ -1,0 +1,544 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "whimui",
+  "homepage": "https://github.com/athene-x/Athenex",
+  "items": [
+    {
+      "name": "tokens",
+      "type": "registry:theme",
+      "title": "Semantic tokens",
+      "description": "success / warning / critical / info colour variables the components use; the CLI maps them into @theme inline. Retune the values to the app's palette.",
+      "cssVars": {
+        "light": {
+          "success": "oklch(0.6 0.15 150)",
+          "success-tint": "oklch(0.96 0.04 150)",
+          "success-foreground": "oklch(0.35 0.1 150)",
+          "warning": "oklch(0.7 0.16 70)",
+          "warning-tint": "oklch(0.97 0.05 85)",
+          "warning-foreground": "oklch(0.42 0.1 60)",
+          "critical": "oklch(0.6 0.22 25)",
+          "critical-tint": "oklch(0.95 0.04 20)",
+          "critical-foreground": "oklch(0.4 0.17 25)",
+          "info": "oklch(0.55 0.2 260)",
+          "info-tint": "oklch(0.95 0.03 260)",
+          "info-foreground": "oklch(0.4 0.15 260)"
+        },
+        "dark": {
+          "success": "oklch(0.72 0.17 150)",
+          "success-tint": "oklch(0.27 0.06 150)",
+          "success-foreground": "oklch(0.85 0.1 150)",
+          "warning": "oklch(0.8 0.16 75)",
+          "warning-tint": "oklch(0.3 0.07 75)",
+          "warning-foreground": "oklch(0.9 0.09 85)",
+          "critical": "oklch(0.72 0.18 25)",
+          "critical-tint": "oklch(0.27 0.07 25)",
+          "critical-foreground": "oklch(0.87 0.08 25)",
+          "info": "oklch(0.7 0.15 260)",
+          "info-tint": "oklch(0.27 0.06 260)",
+          "info-foreground": "oklch(0.85 0.08 260)"
+        }
+      }
+    },
+    {
+      "name": "form",
+      "type": "registry:component",
+      "title": "Form fields",
+      "description": "TanStack Form fields with the shared label/description/error frame, plus useAppForm.",
+      "dependencies": [
+        "@whimui/core@0.1.0",
+        "@tanstack/react-form",
+        "react-number-format",
+        "date-fns",
+        "react-day-picker",
+        "next-intl",
+        "@tabler/icons-react",
+        "@base-ui/react"
+      ],
+      "registryDependencies": [
+        "button",
+        "calendar",
+        "checkbox",
+        "combobox",
+        "field",
+        "input",
+        "input-group",
+        "native-select",
+        "popover",
+        "radio-group",
+        "switch",
+        "textarea",
+        "@whimui/tokens"
+      ],
+      "files": [
+        {
+          "path": "src/components/form/form.tsx",
+          "type": "registry:component",
+          "target": "components/form/form.tsx"
+        },
+        {
+          "path": "src/components/form/form-field.tsx",
+          "type": "registry:component",
+          "target": "components/form/form-field.tsx"
+        },
+        {
+          "path": "src/components/form/form-actions.tsx",
+          "type": "registry:component",
+          "target": "components/form/form-actions.tsx"
+        },
+        {
+          "path": "src/components/form/input-field.tsx",
+          "type": "registry:component",
+          "target": "components/form/input-field.tsx"
+        },
+        {
+          "path": "src/components/form/textarea-field.tsx",
+          "type": "registry:component",
+          "target": "components/form/textarea-field.tsx"
+        },
+        {
+          "path": "src/components/form/input-group-textarea-field.tsx",
+          "type": "registry:component",
+          "target": "components/form/input-group-textarea-field.tsx"
+        },
+        {
+          "path": "src/components/form/number-field.tsx",
+          "type": "registry:component",
+          "target": "components/form/number-field.tsx"
+        },
+        {
+          "path": "src/components/form/switch-field.tsx",
+          "type": "registry:component",
+          "target": "components/form/switch-field.tsx"
+        },
+        {
+          "path": "src/components/form/radio-group-field.tsx",
+          "type": "registry:component",
+          "target": "components/form/radio-group-field.tsx"
+        },
+        {
+          "path": "src/components/form/radio-card-field.tsx",
+          "type": "registry:component",
+          "target": "components/form/radio-card-field.tsx"
+        },
+        {
+          "path": "src/components/form/severity-card-options.ts",
+          "type": "registry:component",
+          "target": "components/form/severity-card-options.ts"
+        },
+        {
+          "path": "src/components/form/segmented-field.tsx",
+          "type": "registry:component",
+          "target": "components/form/segmented-field.tsx"
+        },
+        {
+          "path": "src/components/form/native-select-field.tsx",
+          "type": "registry:component",
+          "target": "components/form/native-select-field.tsx"
+        },
+        {
+          "path": "src/components/form/checkbox-group-field.tsx",
+          "type": "registry:component",
+          "target": "components/form/checkbox-group-field.tsx"
+        },
+        {
+          "path": "src/components/form/checkbox-group-options.ts",
+          "type": "registry:component",
+          "target": "components/form/checkbox-group-options.ts"
+        },
+        {
+          "path": "src/components/form/combobox-field.tsx",
+          "type": "registry:component",
+          "target": "components/form/combobox-field.tsx"
+        },
+        {
+          "path": "src/components/form/date-range-field.tsx",
+          "type": "registry:component",
+          "target": "components/form/date-range-field.tsx"
+        },
+        {
+          "path": "src/components/form/submit-button.tsx",
+          "type": "registry:component",
+          "target": "components/form/submit-button.tsx"
+        },
+        {
+          "path": "src/components/form/README.md",
+          "type": "registry:file",
+          "target": "components/form/README.md"
+        },
+        {
+          "path": "src/hooks/use-app-form.ts",
+          "type": "registry:hook",
+          "target": "hooks/use-app-form.ts"
+        }
+      ]
+    },
+    {
+      "name": "data-table",
+      "type": "registry:component",
+      "title": "Data table",
+      "description": "Server-paged table driven by useListQuery + useListTable, with pagination.",
+      "dependencies": [
+        "@whimui/core@0.1.0",
+        "@tanstack/react-table",
+        "next-intl",
+        "@tabler/icons-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "context-menu",
+        "native-select",
+        "pagination",
+        "table"
+      ],
+      "files": [
+        {
+          "path": "src/components/data-table.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/data-table-pagination.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "list-filters",
+      "type": "registry:component",
+      "title": "List filters",
+      "description": "Search box and single-value filter bound to a useListQuery.",
+      "dependencies": [
+        "@whimui/core@0.1.0",
+        "@tabler/icons-react"
+      ],
+      "registryDependencies": [
+        "input-group",
+        "native-select"
+      ],
+      "files": [
+        {
+          "path": "src/components/list-search-input.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/list-filter-select.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/filter-select.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "confirm-dialog",
+      "type": "registry:component",
+      "dependencies": [
+        "next-intl"
+      ],
+      "registryDependencies": [
+        "alert-dialog"
+      ],
+      "files": [
+        {
+          "path": "src/components/confirm-dialog.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "app-dialog",
+      "type": "registry:component",
+      "registryDependencies": [
+        "dialog"
+      ],
+      "files": [
+        {
+          "path": "src/components/app-dialog.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "page-header",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/page-header.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "detail-list",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/detail-list.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "side-panel",
+      "type": "registry:component",
+      "dependencies": [
+        "@tabler/icons-react"
+      ],
+      "files": [
+        {
+          "path": "src/components/side-panel.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "enum-badge",
+      "type": "registry:component",
+      "registryDependencies": [
+        "badge",
+        "@whimui/tokens"
+      ],
+      "files": [
+        {
+          "path": "src/components/enum-badge.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "user-avatar",
+      "type": "registry:component",
+      "registryDependencies": [
+        "avatar",
+        "tooltip"
+      ],
+      "files": [
+        {
+          "path": "src/components/user-avatar.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "permission-grid",
+      "type": "registry:component",
+      "registryDependencies": [
+        "checkbox",
+        "field",
+        "@whimui/form"
+      ],
+      "files": [
+        {
+          "path": "src/components/permission-grid.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "row-actions",
+      "type": "registry:component",
+      "dependencies": [
+        "@tabler/icons-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "dropdown-menu",
+        "@whimui/app-link"
+      ],
+      "files": [
+        {
+          "path": "src/components/row-actions.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "feedback",
+      "type": "registry:component",
+      "title": "Loading and error states",
+      "description": "LoadError, LoadingText, LoadingPage, ErrorAlert.",
+      "dependencies": [
+        "@whimui/core@0.1.0",
+        "next-intl"
+      ],
+      "registryDependencies": [
+        "alert",
+        "spinner"
+      ],
+      "files": [
+        {
+          "path": "src/components/load-error.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/loading-text.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/loading-page.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/error-alert.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "status-pages",
+      "type": "registry:component",
+      "title": "Status pages",
+      "description": "StatusPage, ErrorPage (error.tsx) and NotFoundPage (not-found.tsx).",
+      "dependencies": [
+        "next-intl"
+      ],
+      "registryDependencies": [
+        "button",
+        "empty",
+        "@whimui/app-link"
+      ],
+      "files": [
+        {
+          "path": "src/components/status-page.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/error-page.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/not-found-page.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "session-expired-dialog",
+      "type": "registry:component",
+      "dependencies": [
+        "@whimui/core@0.1.0",
+        "next-intl",
+        "@tabler/icons-react"
+      ],
+      "registryDependencies": [
+        "alert-dialog",
+        "spinner"
+      ],
+      "files": [
+        {
+          "path": "src/components/session-expired-dialog.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "logout-form",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/logout-form.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "query-provider",
+      "type": "registry:component",
+      "dependencies": [
+        "@whimui/core@0.1.0",
+        "@tanstack/react-query"
+      ],
+      "files": [
+        {
+          "path": "src/components/query-provider.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "app-link",
+      "type": "registry:component",
+      "title": "App link",
+      "description": "next/link plus BasePathProvider for apps whose zones live under a prefix.",
+      "files": [
+        {
+          "path": "src/components/app-link.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/base-path-provider.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "app-shell",
+      "type": "registry:component",
+      "title": "App shell",
+      "description": "Sidebar + header frame: AppShell, AppSidebar, AppSidebarNav, AppBreadcrumb.",
+      "dependencies": [
+        "@whimui/core@0.1.0",
+        "next-intl",
+        "@tabler/icons-react"
+      ],
+      "registryDependencies": [
+        "breadcrumb",
+        "dropdown-menu",
+        "separator",
+        "sidebar",
+        "spinner",
+        "@whimui/app-link",
+        "@whimui/logout-form",
+        "@whimui/user-avatar"
+      ],
+      "files": [
+        {
+          "path": "src/components/app-shell.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/app-sidebar.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/app-sidebar-nav.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/app-breadcrumb.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "locale-switcher",
+      "type": "registry:component",
+      "title": "Locale switcher",
+      "description": "Header and sidebar language menus (expects src/i18n/config.ts and actions.ts).",
+      "dependencies": [
+        "next-intl",
+        "@tabler/icons-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "dropdown-menu",
+        "sidebar",
+        "spinner"
+      ],
+      "files": [
+        {
+          "path": "src/components/locale-switcher.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/language-switcher-menu.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/document-lang.tsx",
+          "type": "registry:component"
+        }
+      ]
+    }
+  ]
+}

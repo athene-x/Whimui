@@ -1,0 +1,34 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "locale-switcher",
+  "title": "Locale switcher",
+  "description": "Header and sidebar language menus (expects src/i18n/config.ts and actions.ts).",
+  "dependencies": [
+    "next-intl",
+    "@tabler/icons-react"
+  ],
+  "registryDependencies": [
+    "button",
+    "dropdown-menu",
+    "sidebar",
+    "spinner"
+  ],
+  "files": [
+    {
+      "path": "src/components/locale-switcher.tsx",
+      "content": "'use client';\n\nimport { IconLanguage, IconSelector } from '@tabler/icons-react';\nimport { useLocale, useTranslations } from 'next-intl';\nimport { useTransition } from 'react';\n\nimport { LanguageSwitcherItems, LanguageSwitcherMenu } from '@/components/language-switcher-menu';\nimport {\n  DropdownMenu,\n  DropdownMenuContent,\n  DropdownMenuTrigger,\n} from '@/components/ui/dropdown-menu';\nimport { SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';\nimport { Spinner } from '@/components/ui/spinner';\nimport { setLocale } from '@/i18n/actions';\nimport { type Locale, locales } from '@/i18n/config';\n\n// Expects the app's `src/i18n/config.ts` (locales, Locale) and `src/i18n/actions.ts`\n// (`setLocale` server action that writes the locale cookie).\n\nfunction useLocaleMenu() {\n  const t = useTranslations('ui');\n  const locale = useLocale();\n  const [pending, startTransition] = useTransition();\n\n  const choose = (next: Locale) => {\n    if (next !== locale) startTransition(() => setLocale(next));\n  };\n\n  const options = locales.map((option) => ({\n    locale: option,\n    label: t(`languages.${option}`),\n    onChoose: () => choose(option),\n  }));\n\n  return { t, locale, pending, options };\n}\n\n/** Header variant: the globe button. */\nexport function LocaleSwitcher() {\n  const { t, locale, pending, options } = useLocaleMenu();\n\n  return (\n    <LanguageSwitcherMenu\n      locale={locale}\n      label={t('language')}\n      pending={pending}\n      options={options}\n    />\n  );\n}\n\n/** Sidebar variant: a menu item with the current language. */\nexport function SidebarLocaleSwitcher() {\n  const { t, locale, pending, options } = useLocaleMenu();\n  const { isMobile } = useSidebar();\n\n  return (\n    <SidebarMenuItem>\n      <DropdownMenu>\n        <DropdownMenuTrigger\n          render={\n            <SidebarMenuButton\n              tooltip={t('language')}\n              aria-label={t('language')}\n              disabled={pending}\n              aria-busy={pending}\n            />\n          }\n        >\n          {pending ? <Spinner /> : <IconLanguage />}\n          <span className=\"flex-1 truncate\">{t(`languages.${locale}`)}</span>\n          <IconSelector className=\"ml-auto group-data-[collapsible=icon]:hidden\" />\n        </DropdownMenuTrigger>\n        <DropdownMenuContent\n          side={isMobile ? 'bottom' : 'right'}\n          align=\"end\"\n          sideOffset={8}\n          className=\"min-w-40\"\n        >\n          <LanguageSwitcherItems locale={locale} options={options} pending={pending} />\n        </DropdownMenuContent>\n      </DropdownMenu>\n    </SidebarMenuItem>\n  );\n}\n",
+      "type": "registry:component"
+    },
+    {
+      "path": "src/components/language-switcher-menu.tsx",
+      "content": "'use client';\n\nimport { IconCheck, IconSelector, IconWorld } from '@tabler/icons-react';\nimport Link from 'next/link';\n\nimport { Button } from '@/components/ui/button';\nimport {\n  DropdownMenu,\n  DropdownMenuContent,\n  DropdownMenuItem,\n  DropdownMenuTrigger,\n} from '@/components/ui/dropdown-menu';\nimport { Spinner } from '@/components/ui/spinner';\nimport { cn } from '@/lib/utils';\n\nexport type LanguageOption = {\n  locale: string;\n  label: string;\n} & ({ href: string; onChoose?: never } | { href?: never; onChoose: () => void });\n\nexport type LanguageSwitcherMenuProps = {\n  locale: string;\n  label: string;\n  options: LanguageOption[];\n  pending?: boolean;\n  className?: string;\n};\n\nexport function LanguageSwitcherItems({\n  locale,\n  options,\n  pending = false,\n}: Pick<LanguageSwitcherMenuProps, 'locale' | 'options' | 'pending'>) {\n  return options.map((option) => (\n    <DropdownMenuItem\n      key={option.locale}\n      lang={option.locale}\n      render={\n        option.href !== undefined ? (\n          <Link href={option.href} hrefLang={option.locale} lang={option.locale} />\n        ) : undefined\n      }\n      onClick={option.onChoose}\n      disabled={pending}\n      aria-current={option.locale === locale ? 'true' : undefined}\n    >\n      <span className=\"w-6 text-xs font-semibold text-muted-foreground uppercase\">\n        {option.locale}\n      </span>\n      <span className=\"flex-1\">{option.label}</span>\n      {option.locale === locale && <IconCheck className=\"ml-auto\" />}\n    </DropdownMenuItem>\n  ));\n}\n\n/** Globe button that opens the language list; items are links (public pages) or callbacks. */\nexport function LanguageSwitcherMenu({\n  locale,\n  label,\n  options,\n  pending = false,\n  className,\n}: LanguageSwitcherMenuProps) {\n  return (\n    <DropdownMenu>\n      <DropdownMenuTrigger\n        render={\n          <Button\n            variant=\"outline\"\n            size=\"sm\"\n            className={cn('shrink-0 text-foreground', className)}\n            aria-label={label}\n            disabled={pending}\n            aria-busy={pending}\n          />\n        }\n      >\n        {pending ? <Spinner /> : <IconWorld className=\"text-primary\" />}\n        <span className=\"uppercase\">{locale}</span>\n        <IconSelector />\n      </DropdownMenuTrigger>\n      <DropdownMenuContent align=\"end\" sideOffset={8} className=\"min-w-40\">\n        <LanguageSwitcherItems locale={locale} options={options} pending={pending} />\n      </DropdownMenuContent>\n    </DropdownMenu>\n  );\n}\n",
+      "type": "registry:component"
+    },
+    {
+      "path": "src/components/document-lang.tsx",
+      "content": "'use client';\n\nimport { useEffect } from 'react';\n\n/** Sets `<html lang>` for a subtree whose language differs from the root layout's. */\nexport function DocumentLang({ lang }: { lang: string }) {\n  useEffect(() => {\n    const html = document.documentElement;\n    const previous = html.lang;\n    html.lang = lang;\n    return () => {\n      html.lang = previous;\n    };\n  }, [lang]);\n\n  return null;\n}\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

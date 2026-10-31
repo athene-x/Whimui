@@ -48,3 +48,7 @@ not authentication integration tests. A real app must provide its own login/logo
 
 Registry hosting/publishing is not configured. Installation snippets assume the consuming app has
 registered a working `@whimui` URL in components.json.
+
+For releases, use `pnpm registry:release` to build `/r/<version>/` from current source with a pinned
+core dependency. Keep versioned directories; normal `registry:build` only refreshes the development
+files. See [the release guide](../../docs/releases.md) for Changesets and private distribution.
