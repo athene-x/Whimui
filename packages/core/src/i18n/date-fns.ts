@@ -2,9 +2,13 @@ import type { Locale as DateFnsLocale } from 'date-fns';
 
 import { enUS, th } from 'date-fns/locale';
 
-const DATE_FNS_LOCALES: Record<string, DateFnsLocale> = { en: enUS, th };
+const DATE_FNS_LOCALES = new Map<string, DateFnsLocale>([
+  ['en', enUS],
+  ['th', th],
+]);
 
-/** The date-fns locale for a next-intl locale code; English when unknown. */
+/** Matches the base language of a locale code (e.g. `th-TH`); English when unknown. */
 export function dateFnsLocale(locale: string): DateFnsLocale {
-  return DATE_FNS_LOCALES[locale] ?? enUS;
+  const language = locale.trim().toLowerCase().split('-')[0];
+  return DATE_FNS_LOCALES.get(language) ?? enUS;
 }

@@ -31,7 +31,10 @@ function findLabel<TLabel extends string>(
   return routes.find(({ pattern }) => matches(pattern, segments))?.label;
 }
 
-/** One crumb per path prefix that matches a route, in order; prefixes without a route are skipped. */
+/**
+ * One crumb per matching path prefix; prefixes without a route are skipped.
+ * The first matching route wins, so put static routes before overlapping `:param` routes.
+ */
 export function buildBreadcrumbs<TLabel extends string>(
   routes: readonly BreadcrumbRoute<TLabel>[],
   pathname: string,
