@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useReducer, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react';
 
 import type { ListQueryParams, SortTerm } from './list-query';
 import type { ListPage } from './list-query-table';
@@ -55,20 +55,38 @@ export function useListQuery<
 
   useEffect(() => () => clearTimeout(searchTimer.current), []);
 
-  function setSearchInput(value: string) {
-    setSearchInputValue(value);
-    clearTimeout(searchTimer.current);
-    searchTimer.current = setTimeout(
-      () => dispatch({ type: 'search', searchTerm: value }),
-      searchDelayMs,
-    );
-  }
+  const setSearchInput = useCallback(
+    (value: string) => {
+      setSearchInputValue(value);
+      clearTimeout(searchTimer.current);
+      searchTimer.current = setTimeout(
+        () => dispatch({ type: 'search', searchTerm: value }),
+        searchDelayMs,
+      );
+    },
+    [searchDelayMs],
+  );
 
-  function reset() {
+  const reset = useCallback(() => {
     clearTimeout(searchTimer.current);
     setSearchInputValue('');
     dispatch({ type: 'reset', state: initialState });
-  }
+  }, [initialState]);
+
+  // `dispatch` is stable, so these keep their identity for the life of the list; `useListTable`
+  // and memoized toolbars can depend on them without re-running every render.
+  const actions = useMemo(
+    () => ({
+      setPage: (page: number) => dispatch({ type: 'page', page }),
+      setSize: (size: number) => dispatch({ type: 'size', size }),
+      setPagination: ({ page, size }: ListPage) => dispatch({ type: 'pagination', page, size }),
+      setSort: (sort: SortTerm<TSortField> | undefined) => dispatch({ type: 'sort', sort }),
+      toggleSort: (field: TSortField) => dispatch({ type: 'toggleSort', field }),
+      setFilter: (field: TFilterField, values: string[]) =>
+        dispatch({ type: 'filter', field, values }),
+    }),
+    [],
+  );
 
   return {
     params: toListQueryParams(state),
@@ -77,13 +95,8 @@ export function useListQuery<
     page: state.page,
     size: state.size,
     setSearchInput,
-    setPage: (page) => dispatch({ type: 'page', page }),
-    setSize: (size) => dispatch({ type: 'size', size }),
-    setPagination: ({ page, size }) => dispatch({ type: 'pagination', page, size }),
-    setSort: (sort) => dispatch({ type: 'sort', sort }),
-    toggleSort: (field) => dispatch({ type: 'toggleSort', field }),
+    ...actions,
     sortDirection: (field) => sortDirection(state, field),
-    setFilter: (field, values) => dispatch({ type: 'filter', field, values }),
     getFilter: (field) => filterValues(state, field),
     reset,
   };

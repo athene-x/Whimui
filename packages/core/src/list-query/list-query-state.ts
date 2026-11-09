@@ -1,6 +1,6 @@
 import type { FilterTerm, ListQueryParams, SortTerm } from './list-query';
 
-import { FIRST_PAGE } from './list-query';
+import { FIRST_PAGE, MAX_LIST_SIZE } from './list-query';
 
 const DEFAULT_SIZE = 20;
 
@@ -88,9 +88,10 @@ export function listQueryReducer<TSortField extends string, TFilterField extends
   }
 }
 
-/** Invalid sizes fall back to the default; valid positive integers are preserved. */
+/** Invalid sizes fall back to the default; positive integers are kept, capped at `MAX_LIST_SIZE`. */
 function normalizeSize(size: number | undefined): number {
-  return size !== undefined && Number.isInteger(size) && size > 0 ? size : DEFAULT_SIZE;
+  if (size === undefined || !Number.isInteger(size) || size <= 0) return DEFAULT_SIZE;
+  return Math.min(size, MAX_LIST_SIZE);
 }
 
 export function toListQueryParams<TSortField extends string, TFilterField extends string>(
