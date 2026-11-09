@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "query-provider",
+  "dependencies": [
+    "@athene-x/whimui@0.3.0",
+    "@tanstack/react-query"
+  ],
+  "files": [
+    {
+      "path": "src/components/query-provider.tsx",
+      "content": "'use client';\n\nimport type { ReactNode } from 'react';\n\nimport { getQueryClient } from '@athene-x/whimui/query';\nimport { QueryClientProvider } from '@tanstack/react-query';\n\nexport function QueryProvider({ children }: { children: ReactNode }) {\n  return <QueryClientProvider client={getQueryClient()}>{children}</QueryClientProvider>;\n}\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

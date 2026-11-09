@@ -1,6 +1,6 @@
 {
   "name": "@athene-x/whimui",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "WhimUI standard web kit: framework-level logic shared by the Next.js apps (server-paged lists, API client, form core, Keycloak BFF helpers, ui messages).",
   "license": "UNLICENSED",
   "repository": {

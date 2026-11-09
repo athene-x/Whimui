@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "enum-badge",
+  "registryDependencies": [
+    "badge",
+    "@whimui/tokens"
+  ],
+  "files": [
+    {
+      "path": "src/components/enum-badge.tsx",
+      "content": "import type { ComponentProps } from 'react';\n\nimport { Badge } from '@/components/ui/badge';\n\nexport type EnumBadgeProps<TValue extends string> = {\n  value: TValue;\n  /** Display text per value; usually `t(value)` of the enum's message namespace. */\n  label: string;\n  classNames: Partial<Record<TValue, string>>;\n  variant?: ComponentProps<typeof Badge>['variant'];\n};\n\nexport const SEVERITY_CLASS_NAME = {\n  Low: 'text-muted-foreground',\n  Medium: '',\n  High: 'border-warning text-warning-foreground',\n  Critical: 'border-critical text-critical-foreground',\n} satisfies Record<'Low' | 'Medium' | 'High' | 'Critical', string>;\n\n/** A badge whose colour follows an enum value (status, severity, priority…). */\nexport function EnumBadge<TValue extends string>({\n  value,\n  label,\n  classNames,\n  variant = 'outline',\n}: EnumBadgeProps<TValue>) {\n  return (\n    <Badge variant={variant} className={classNames[value]}>\n      {label}\n    </Badge>\n  );\n}\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}
