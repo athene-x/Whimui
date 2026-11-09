@@ -36,6 +36,8 @@ apps/playground/          Next app = registry source + component catalog at /dem
   src/styles/tokens.css   Minato brand palette (the shadcn variables), playground only
   src/styles/semantic-tokens.css  success/warning/critical/info: the `tokens` registry item's cssVars
   scripts/check-tokens.mjs  fails when semantic-tokens.css and the registry item drift
+apps/starter/             reference app structure with a Tasks CRUD (no Keycloak)
+apps/demo/                test harness: API lab against a fake API + Keycloak login/logout (compose.yaml inside)
 ```
 
 ## Working on the kit
@@ -49,6 +51,11 @@ For application structure, start with [apps/starter](apps/starter/README.md). It
 working Tasks CRUD example, providers, app API configuration, Thai/English messages and
 dependency-boundary checks, without requiring a shared component library. Run `pnpm dev:starter`
 to try it at http://localhost:3001. Playground remains the registry source and preview.
+
+To check that the `api` and `auth` modules behave against a real Keycloak, use
+[apps/demo](apps/demo/README.md): `pnpm --filter demo keycloak` starts Keycloak 26 with the demo
+realm, `pnpm dev:demo` serves the harness at http://localhost:3002, and `pnpm --filter demo e2e`
+runs the login, BFF, logout and back-channel-logout flow without a browser.
 
 ```bash
 pnpm install

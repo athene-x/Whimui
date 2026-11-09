@@ -1,0 +1,5 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["nextjs", "typescript", "eslint"],
+  "rules": { "react/rules-of-hooks": "error" }
+}
