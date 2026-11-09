@@ -4,3 +4,4 @@ export * from './form';
 export * from './hooks';
 export * from './i18n';
 export * from './list-query';
+export * from './query';

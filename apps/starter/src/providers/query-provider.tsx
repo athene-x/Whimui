@@ -2,25 +2,9 @@
 
 import type { ReactNode } from 'react';
 
-import { ApiError, STALE_TIME_MS } from '@athene-x/whimui/api';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
-let browserClient: QueryClient | undefined;
-
-function createClient() {
-  return new QueryClient({
-    defaultOptions: {
-      queries: {
-        staleTime: STALE_TIME_MS,
-        retry: (count, error) =>
-          count < 2 && !(error instanceof ApiError && error.status >= 400 && error.status < 500),
-      },
-    },
-  });
-}
+import { getQueryClient } from '@athene-x/whimui/query';
+import { QueryClientProvider } from '@tanstack/react-query';
 
 export function QueryProvider({ children }: { children: ReactNode }) {
-  const client =
-    typeof window === 'undefined' ? createClient() : (browserClient ??= createClient());
-  return <QueryClientProvider client={client}>{children}</QueryClientProvider>;
+  return <QueryClientProvider client={getQueryClient()}>{children}</QueryClientProvider>;
 }

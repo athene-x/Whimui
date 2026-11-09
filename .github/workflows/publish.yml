@@ -23,7 +23,7 @@ jobs:
           scope: '@athene-x'
       - run: pnpm install --frozen-lockfile
       - run: pnpm check
-      - run: node --test packages/core/tests/auth.test.mjs
+      - run: node --test "packages/core/tests/*.test.mjs"
       - name: Publish versions without a release tag
         run: pnpm release:publish
         env:

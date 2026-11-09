@@ -4,14 +4,16 @@ import { test } from 'node:test';
 
 registerHooks({
   resolve(specifier, context, nextResolve) {
-    return nextResolve(specifier === './jwt' ? './jwt.ts' : specifier, context);
+    const local = specifier.startsWith('.') && !/\.[cm]?[jt]s$/.test(specifier);
+    return nextResolve(local ? `${specifier}.ts` : specifier, context);
   },
 });
 
-const { parseJwt, decodeJwtPayload } = await import('../src/auth/jwt.ts');
+const { decodeJwtPayload } = await import('../src/auth/jwt.ts');
 const { verifyLogoutToken, LogoutTokenError } = await import('../src/auth/logout-token.ts');
 const { revokeKeycloakSession, isKeycloakSessionRevoked } =
   await import('../src/auth/revoked-sessions.ts');
+const { handleBackchannelLogout } = await import('../src/auth/backchannel-logout.ts');
 
 const event = 'http://schemas.openid.net/event/backchannel-logout';
 const now = 1_800_000_000;
@@ -61,23 +63,18 @@ function setup(t, body = { keys: [publicKey] }) {
   return { verifier, fetch };
 }
 
-test('JWT decoding requires three canonical base64url segments and object header/payload', () => {
+test('JWT payload decoding returns null for anything that is not a well-formed JWT', () => {
   const valid = `${encode({ alg: 'RS256' })}.${encode({ sub: 'user' })}.c2ln`;
-  assert.equal(parseJwt(valid).payload.sub, 'user');
   assert.deepEqual(decodeJwtPayload(valid), { sub: 'user' });
   for (const token of [
     valid + '.extra',
     valid.slice(0, valid.lastIndexOf('.')),
-    valid + '=',
     '',
-    `${encode([])}.${encode({})}.c2ln`,
-    `${encode({})}.${encode(null)}.c2ln`,
+    'not a token',
     `${encode({})}.${encode('text')}.c2ln`,
     `${encode({})}.${encode([])}.c2ln`,
     `${encode({})}.!${encode({})}.c2ln`,
-    `${encode({})}.eyJ4Ijoi_yJ9.c2ln`,
   ]) {
-    assert.equal(parseJwt(token), null, token);
     assert.equal(decodeJwtPayload(token), null, token);
   }
 });
@@ -158,17 +155,14 @@ test('rejects malformed JWKS response structures', async (t) => {
     { keys: [{ ...publicKey, key_ops: 'verify' }] },
   ]) {
     const { verifier } = setup(t, body);
-    await assert.rejects(
-      verifyLogoutToken(await sign(claims()), verifier),
-      /invalid JWKS response/,
-    );
+    await assert.rejects(verifyLogoutToken(await sign(claims()), verifier), LogoutTokenError);
   }
 });
 
 test('rejects keys with incompatible algorithm, use, or key operations', async (t) => {
   for (const patch of [{ alg: 'RS512' }, { use: 'enc' }, { key_ops: ['sign'] }]) {
     const { verifier } = setup(t, { keys: [{ ...publicKey, ...patch }] });
-    await assert.rejects(verifyLogoutToken(await sign(claims()), verifier), /unknown key/);
+    await assert.rejects(verifyLogoutToken(await sign(claims()), verifier), LogoutTokenError);
   }
 });
 
@@ -178,6 +172,13 @@ test('refreshes cached JWKS once when the signing key id changes', async (t) => 
   fetch.mock.mockImplementation(async () =>
     Response.json({ keys: [{ ...publicKey, kid: 'key-2' }] }),
   );
+  // Inside jose's 30-second cooldown an unknown kid is refused without a refetch.
+  await assert.rejects(
+    verifyLogoutToken(await sign(claims(), { alg: 'RS256', kid: 'key-2' }), verifier),
+    LogoutTokenError,
+  );
+  assert.equal(fetch.mock.callCount(), 1);
+  t.mock.method(Date, 'now', () => (now + 31) * 1000);
   await verifyLogoutToken(await sign(claims(), { alg: 'RS256', kid: 'key-2' }), verifier);
   assert.equal(fetch.mock.callCount(), 2);
 });
@@ -204,4 +205,41 @@ test('invalid revocation TTLs throw without clearing an existing revocation', ()
     assert.throws(() => revokeKeycloakSession(sid, ttl), RangeError);
     assert.equal(isKeycloakSessionRevoked(sid), true);
   }
+});
+
+test('back-channel logout handler revokes the session and answers per spec', async (t) => {
+  const { verifier } = setup(t);
+  const sid = crypto.randomUUID();
+  const post = (body) =>
+    new Request('http://web.internal/api/auth/backchannel-logout', {
+      method: 'POST',
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      body,
+    });
+  const seen = [];
+  const ok = await handleBackchannelLogout(
+    post(new URLSearchParams({ logout_token: await sign({ ...claims(), sid }) })),
+    { verifier, revokeForSeconds: 60, onLogout: (token) => seen.push(token) },
+  );
+  assert.equal(ok.status, 200);
+  assert.equal(ok.headers.get('cache-control'), 'no-store');
+  assert.deepEqual(seen, [{ sid, sub: 'user-1' }]);
+  assert.equal(isKeycloakSessionRevoked(sid), true);
+
+  const bad = await handleBackchannelLogout(
+    post(new URLSearchParams({ logout_token: await sign({ ...claims(), iss: 'wrong' }) })),
+    { verifier, revokeForSeconds: 60 },
+  );
+  assert.equal(bad.status, 400);
+  assert.equal(bad.headers.get('cache-control'), 'no-store');
+  const body = await bad.json();
+  assert.equal(body.error, 'invalid_request');
+  assert.match(body.error_description, /iss/);
+
+  const missing = await handleBackchannelLogout(post(new URLSearchParams()), {
+    verifier,
+    revokeForSeconds: 60,
+  });
+  assert.equal(missing.status, 400);
+  assert.equal((await missing.json()).error, 'invalid_request');
 });

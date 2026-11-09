@@ -16,5 +16,5 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm check
-      - run: node --test packages/core/tests/auth.test.mjs
+      - run: node --test "packages/core/tests/*.test.mjs"
       - run: pnpm --filter starter build

@@ -21,9 +21,10 @@ app's own copies through `registryDependencies`.
 ```text
 packages/core/            @athene-x/whimui (TypeScript source, no build step)
   src/list-query/         useListQuery, useListTable, list-query state/params, pageRange
-  src/api/                createApiClient, ApiError, session-expired store, query defaults
+  src/api/                createApiClient, createServerApiClient, ApiError, session-expired store (Ky only)
+  src/query/              TanStack Query glue: createQueryClient/getQueryClient defaults, invalidateOnSuccess
   src/form/               TanStack form contexts, field-state helpers, toSubmitError/describeError
-  src/auth/               (server only) jwt, Keycloak URLs, back-channel logout token, revoked sessions
+  src/auth/               (server only) Keycloak URLs, back-channel logout (jose), revoked sessions, session cookie check
   src/i18n/               breadcrumbs, enum labels, date helpers, next-intl types
   src/hooks/              useMediaQuery, useIsMobile
   src/messages/           the `ui` namespace (en, th) used by the registry components
@@ -133,18 +134,20 @@ const table = useListTable({
 });
 ```
 
-**Server-only modules.** `@athene-x/whimui/auth` uses Node `Buffer`, WebCrypto and
-`better-auth/cookies`; import it from route handlers and middleware only, and install `better-auth`
-if you import it at all. `revokeKeycloakSession` keeps its list in process memory, so it only
-works for a single server instance.
+**Server-only modules.** `@athene-x/whimui/auth` uses WebCrypto, `jose` and
+`better-auth/cookies`; import it from route handlers and middleware only, and install `jose`
+and `better-auth` if you import it at all. Login, token refresh and the front-channel logout
+redirect are better-auth's job (`genericOAuth` with its `keycloak` provider and
+`auth.api.getAccessToken`); the kit only adds what better-auth lacks.
 
-JWT decode helpers require three base64url segments and object header/payload, but do not
-verify signatures or claims. The logout verifier allows up to 60 seconds of future `iat`
-clock skew. For compatibility, `exp` and `jti` are not required yet; `exp` is validated when
-present, and `jti` replay detection is not implemented. Revocation TTLs must be positive
-and finite; invalid TTLs throw `RangeError`, and repeated revocations never shorten the
-existing deadline. Run the auth regression checks with Node 24 or later:
-`node --test packages/core/tests/auth.test.mjs`.
+`verifyLogoutToken` checks the signature against the realm's JWKS through `jose`, then the
+back-channel logout profile: `events`, `sid`, no `nonce`, issued within the last five minutes
+with 60 seconds of clock skew; `exp` is validated when present and `jti` replay detection is
+not implemented. `handleBackchannelLogout` wraps it for the route handler and revokes the
+session. `revokeKeycloakSession` keeps its list in process memory, so it only works for a
+single server instance; TTLs must be positive and finite, and repeated revocations never
+shorten the existing deadline. `decodeJwtPayload` reads a payload without verifying it.
+Run the core checks with Node 24 or later: `node --test "packages/core/tests/*.test.mjs"`.
 
 The playground's `/demo/<item>` pages document each registry item's usage and dependencies.
 `pnpm registry:check` audits those declarations and keeps demo files out of installed components.

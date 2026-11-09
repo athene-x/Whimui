@@ -11,6 +11,6 @@ Published as TypeScript source to GitHub Packages. Consumers map the `@athene-x`
 pnpm add @athene-x/whimui
 ```
 
-Entry points: `.`, `./list-query`, `./api`, `./form`, `./auth`, `./i18n`, `./hooks`,
+Entry points: `.`, `./list-query`, `./api`, `./query`, `./form`, `./auth`, `./i18n`, `./hooks`,
 `./messages/en`, `./messages/th`. See `docs/releases.md` in the repository for versioning
 and publishing.

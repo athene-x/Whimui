@@ -24,7 +24,7 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm check
-      - run: node --test packages/core/tests/auth.test.mjs
+      - run: node --test "packages/core/tests/*.test.mjs"
       - name: Pack core without publishing
         if: inputs.target != 'registry'
         run: pnpm --filter @athene-x/whimui pack --pack-destination .release/core

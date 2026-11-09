@@ -11,6 +11,8 @@ import ky, {
 
 import { markSessionExpired } from './session-expired';
 
+export type { BeforeRequestState };
+
 const UNAUTHORIZED = 401;
 
 export const API_PREFIX = '/api/v1';
@@ -59,20 +61,17 @@ export function apiErrorBody(code: string, description: string): ApiErrorBody {
 }
 
 export type ApiClientOptions = Options & {
-  /** Runs before `hooks.beforeRequest`; retained for existing callers. */
+  /** Runs before `hooks.beforeRequest`. */
   beforeRequest?: NonNullable<Hooks['beforeRequest']>;
-  /**
-   * Runs in the browser on a 401; by default marks the session expired so a
-   * `SessionExpiredDialog` can offer the login again.
-   */
+  /** Runs in the browser on a 401. Defaults to marking the session expired. */
   onUnauthorized?: () => void;
-  /** Replaces the default error normalization; app `beforeError` hooks run afterward. */
+  /** Replaces `toApiError`; `hooks.beforeError` still runs afterwards. */
   normalizeError?: (state: BeforeErrorState) => Error | Promise<Error>;
 };
 
 /**
- * Creates a Ky client with API error handling. Defaults to the app's `/api/v1` BFF
- * and no retries; callers can override native Ky options and add hooks.
+ * A Ky client that throws `ApiError`. Defaults to the app's `/api/v1` BFF with no
+ * retries; TanStack Query decides about retrying.
  */
 export function createApiClient({
   beforeRequest = [],
@@ -99,23 +98,58 @@ export function createApiClient({
   });
 }
 
-export type { BeforeRequestState };
-
-function notifyUnauthorized({ error }: BeforeErrorState, onUnauthorized?: () => void): void {
+function notifyUnauthorized({ error }: BeforeErrorState, onUnauthorized: () => void): void {
   if (
     isHTTPError(error) &&
     error.response.status === UNAUTHORIZED &&
     typeof window !== 'undefined'
   ) {
-    onUnauthorized?.();
+    onUnauthorized();
   }
 }
 
-export function toApiError(state: BeforeErrorState, onUnauthorized?: () => void): Error {
-  const { error } = state;
+type AccessToken = string | null | undefined;
+
+export type AccessTokenProvider = () => AccessToken | Promise<AccessToken>;
+
+export type ServerApiClientOptions = Omit<ApiClientOptions, 'onUnauthorized'> & {
+  /** The API as the server reaches it, e.g. `http://api:8080/`; `prefix` is appended. */
+  baseUrl: string | URL;
+  /** Reads the current user's access token, e.g. from the session. */
+  getAccessToken: AccessTokenProvider;
+};
+
+/**
+ * A Ky client for server components and route handlers: calls the API directly,
+ * never caches, and sends the user's bearer token. Keep it in server-only modules.
+ */
+export function createServerApiClient({
+  baseUrl,
+  getAccessToken,
+  beforeRequest = [],
+  ...options
+}: ServerApiClientOptions): KyInstance {
+  return createApiClient({
+    baseUrl,
+    cache: 'no-store',
+    ...options,
+    beforeRequest: [authorizeWith(getAccessToken), ...beforeRequest],
+  });
+}
+
+/** A `beforeRequest` hook that sets the bearer token, or fails with a 401 `ApiError` before sending. */
+export function authorizeWith(getAccessToken: AccessTokenProvider) {
+  return async ({ request }: BeforeRequestState): Promise<void> => {
+    const token = await getAccessToken();
+    if (!token) throw new ApiError(UNAUTHORIZED, SESSION_REQUIRED);
+    request.headers.set('authorization', `Bearer ${token}`);
+  };
+}
+
+/** Turns Ky's HTTP, timeout and network errors into `ApiError`; other errors pass through. */
+export function toApiError({ error }: BeforeErrorState): Error {
   if (isHTTPError(error)) {
     const { status } = error.response;
-    notifyUnauthorized(state, onUnauthorized);
     const body = isApiErrorBody(error.data)
       ? error.data
       : apiErrorBody('Web.UnexpectedResponse', `The API answered ${status} without an error body.`);

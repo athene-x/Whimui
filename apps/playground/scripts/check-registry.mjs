@@ -26,8 +26,8 @@ function importsOf(source, filename) {
         throw new Error(`${filename}: nonliteral module path`);
       imports.push(node.source.value);
     }
-    if (node.type === 'TSImportType' && node.argument?.type === 'StringLiteral')
-      imports.push(node.argument.value);
+    if (node.type === 'TSImportType' && node.source.type === 'StringLiteral')
+      imports.push(node.source.value);
     for (const [key, value] of Object.entries(node)) {
       if (['loc', 'comments', 'tokens', 'errors'].includes(key)) continue;
       if (Array.isArray(value)) {

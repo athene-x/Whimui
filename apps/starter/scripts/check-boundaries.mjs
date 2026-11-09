@@ -91,7 +91,7 @@ export function checkSource(file, text, root = sourceRoot) {
     ) {
       dependency(node, node.source);
     }
-    if (node.type === 'TSImportType') dependency(node, node.argument);
+    if (node.type === 'TSImportType') dependency(node, node.source);
     if (node.type === 'ImportExpression') dependency(node, node.source);
     if (node.type === 'CallExpression') {
       const expression = node.callee;
