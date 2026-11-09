@@ -1,6 +1,6 @@
 'use client';
 
-import { describeError } from '@athene-x/whimui/form';
+import { describeError } from '@athene-x/whimui/api';
 import {
   useListQuery,
   useListTable,

@@ -1,39 +1,18 @@
 'use client';
 
-import { describedBy, isFieldInvalid, toFieldErrors, useFieldContext } from '@athene-x/whimui/form';
-import { useId, type ComponentProps, type ReactNode } from 'react';
+import type { ComponentProps } from 'react';
+
+import {
+  isFieldInvalid,
+  toFieldErrors,
+  useFieldContext,
+  type FormFieldProps,
+} from '@athene-x/whimui/form';
 
 import { Field, FieldDescription, FieldError, FieldLabel } from '@/components/ui/field';
 
-export type FormFieldProps = {
-  id?: string;
-  label?: ReactNode;
-  description?: ReactNode;
-  required?: boolean;
-  fieldClassName?: string;
-};
-
-type LayoutKey = 'id' | 'label' | 'description' | 'fieldClassName';
-type InputPropsOf<TProps> = TProps extends unknown ? Omit<TProps, LayoutKey> : never;
-
-export function useFieldControl<TProps extends FormFieldProps>(props: TProps) {
-  const { id: idProp, label, description, fieldClassName, ...inputProps } = props;
-  const generatedId = useId();
-  const field = useFieldContext<unknown>();
-  const id = idProp ?? generatedId;
-  const invalid = isFieldInvalid(field.state.meta);
-
-  return {
-    fieldProps: { id, label, description, fieldClassName, required: props.required },
-    controlProps: {
-      id,
-      name: field.name,
-      'aria-invalid': invalid,
-      'aria-describedby': describedBy(id, { hasDescription: description != null, invalid }),
-    },
-    inputProps: inputProps as unknown as InputPropsOf<TProps>,
-  };
-}
+// The hook and props type live in the kit; re-exported so field components import one module.
+export { useFieldControl, type FormFieldProps } from '@athene-x/whimui/form';
 
 export function FormField({
   id,

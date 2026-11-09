@@ -1,5 +1,7 @@
 'use client';
 
+import { ApiError, apiErrorBody } from '@athene-x/whimui/api';
+import { applySubmitError, toSubmitError } from '@athene-x/whimui/form';
 import { useState } from 'react';
 import { z } from 'zod';
 
@@ -13,20 +15,38 @@ import { waitForPreview } from './list-fixtures';
 
 const schema = z.object({ email: z.email('Enter a valid email.') });
 
+type Outcome = 'ok' | 'form-error' | 'field-error';
+
+/** Stands in for the API: a 409 with a code the form maps to the email field, or a plain 500. */
+function simulatedFailure(outcome: Outcome) {
+  return outcome === 'field-error'
+    ? new ApiError(409, apiErrorBody('Demo.EmailTaken', 'That email is already registered.'))
+    : new ApiError(
+        500,
+        apiErrorBody('Demo.SaveFailed', 'Simulated save failure. Your input is retained.'),
+      );
+}
+
 export function FormsDemo() {
   const [disabled, setDisabled] = useState(false);
-  const [fail, setFail] = useState(false);
+  const [outcome, setOutcome] = useState<Outcome>('ok');
   const [message, setMessage] = useState<string>();
   const [error, setError] = useState<string>();
   const form = useAppForm({
     defaultValues: { email: '' },
     validators: { onChange: schema },
-    onSubmit: async () => {
+    onSubmit: async ({ formApi }) => {
       setError(undefined);
       setMessage(undefined);
       await waitForPreview();
-      if (fail) setError('Simulated save failure. Your input is retained.');
-      else setMessage('Saved locally for this preview. No data was sent.');
+      if (outcome === 'ok') {
+        setMessage('Saved locally for this preview. No data was sent.');
+        return;
+      }
+      const result = toSubmitError<'email'>(simulatedFailure(outcome), 'Something went wrong.', {
+        'Demo.EmailTaken': { field: 'email', message: 'This email is already registered.' },
+      });
+      setError(applySubmitError(formApi, result));
     },
   });
 
@@ -42,12 +62,16 @@ export function FormsDemo() {
           Disable field
         </label>
         <label className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            checked={fail}
-            onChange={(event) => setFail(event.target.checked)}
-          />
-          Fail next submit
+          Next submit
+          <select
+            className="rounded-md border bg-background px-2 py-1"
+            value={outcome}
+            onChange={(event) => setOutcome(event.target.value as Outcome)}
+          >
+            <option value="ok">succeeds</option>
+            <option value="form-error">fails with a form error</option>
+            <option value="field-error">fails with an email field error</option>
+          </select>
         </label>
       </div>
       <Form form={form} className="max-w-lg space-y-4">
@@ -57,7 +81,7 @@ export function FormsDemo() {
               label="Email"
               required
               disabled={disabled}
-              description="Submit an invalid address to see validation. A valid submission stays pending briefly."
+              description="Submit an invalid address to see validation. A valid submission stays pending briefly; a field error from the API shows here until the value changes."
             />
           )}
         </form.AppField>

@@ -1,6 +1,6 @@
 'use client';
 
-import { toSubmitError } from '@athene-x/whimui/form';
+import { describeError } from '@athene-x/whimui/api';
 import { useTranslations } from 'next-intl';
 
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -17,7 +17,7 @@ export function LoadError({ error, className }: LoadErrorProps) {
 
   return (
     <Alert variant="destructive" className={cn('max-w-xl', className)}>
-      <AlertDescription>{toSubmitError(error, t('errors.loadFailed')).message}</AlertDescription>
+      <AlertDescription>{describeError(error, {}, t('errors.loadFailed'))}</AlertDescription>
     </Alert>
   );
 }

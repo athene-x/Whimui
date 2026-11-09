@@ -1,6 +1,6 @@
 'use client';
 
-import { toSubmitError } from '@athene-x/whimui/form';
+import { applySubmitError, toSubmitError } from '@athene-x/whimui/form';
 import { useMutation } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
@@ -17,7 +17,7 @@ export function TaskForm({ task, onClose }: { task?: Task; onClose: () => void }
   const form = useAppForm({
     defaultValues: { title: task?.title ?? '', completed: task?.completed ?? false },
     validators: { onChange: taskInputSchema },
-    onSubmit: async ({ value }) => {
+    onSubmit: async ({ value, formApi }) => {
       setSubmitError(undefined);
       try {
         await mutation.mutateAsync({ id: task?.id, input: taskInputSchema.parse(value) });
@@ -27,15 +27,7 @@ export function TaskForm({ task, onClose }: { task?: Task; onClose: () => void }
           'Tasks.DuplicateTitle': { field: 'title', message: t('duplicate') },
           'Tasks.InvalidInput': { field: 'title', message: t('invalidTitle') },
         });
-        if (result.fields?.title) {
-          form.setFieldMeta('title', (meta) => ({
-            ...meta,
-            isTouched: true,
-            errorMap: { ...meta.errorMap, onSubmit: result.fields.title },
-          }));
-        } else {
-          setSubmitError(result.message);
-        }
+        setSubmitError(applySubmitError(formApi, result));
       }
     },
   });

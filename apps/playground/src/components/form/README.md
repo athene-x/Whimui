@@ -39,6 +39,38 @@ Await your API call in `onSubmit` so the submit button stays busy. The WhimUI
 playground at `/demo/form` shows field examples and submission states.
 Demo schemas, fixtures and screens are kept outside the installable registry files.
 
+## Submit errors from the API
+
+Map API error codes to fields with `toSubmitError`, then hand the result to
+`applySubmitError` with the `formApi` that `onSubmit` receives. Field errors become
+each field's `onSubmit` error, shown by the field components like any other error
+and cleared when that field changes. Anything that does not map to a field comes back
+as one message for an `ErrorAlert` above the actions. Both helpers come from
+`@athene-x/whimui/form`.
+
+```tsx
+const [submitError, setSubmitError] = useState<string>();
+const form = useAppForm({
+  defaultValues: { email: '' },
+  validators: { onChange: schema },
+  onSubmit: async ({ value, formApi }) => {
+    setSubmitError(undefined);
+    try {
+      await save.mutateAsync(schema.parse(value));
+    } catch (error) {
+      const result = toSubmitError<'email'>(error, t('errors.unexpected'), {
+        'Users.EmailTaken': { field: 'email', message: t('emailTaken') },
+      });
+      setSubmitError(applySubmitError(formApi, result));
+    }
+  },
+});
+```
+
+Keep the rules next to the feature's other error messages (its `errors.ts`) so each
+code is translated once. The field union passed to `toSubmitError` must name keys of
+the form's values; TypeScript rejects a rule for a field the form does not have.
+
 ## Values and validation
 
 | Component                                                                                            | Stored value                                                                          |
@@ -165,8 +197,10 @@ near the end of the list calls `onLoadMore`, unless `loadingMore` is set;
 To add a field component, read the value with `useFieldContext<T>()` and pass the
 component's props to `useFieldControl`. It returns `fieldProps` for `FormField`,
 `controlProps` (`id`, `name`, `aria-invalid`, `aria-describedby`) for the control,
-and `inputProps`, the remaining props for the underlying input. Register the
-component in `use-app-form.ts`.
+and `inputProps`, the remaining props for the underlying input. The hook and
+`FormFieldProps` come from `@athene-x/whimui/form`; `form-field.tsx` re-exports them
+so a field component imports everything from one place. Register the component in
+`use-app-form.ts`.
 
 ```tsx
 export function SliderField(props: FormFieldProps & SliderProps) {
@@ -191,5 +225,5 @@ For a one-off control, use `field.FormField` inside `form.AppField`. Pass a uniq
 `id` matching your control; attach its value, `field.handleChange`, and
 `field.handleBlur`, and connect `aria-invalid` and `aria-describedby`.
 
-`field-state.ts` holds the pure helpers behind validity, error messages, and
-`aria-describedby`.
+`isFieldInvalid`, `toFieldErrors`, and `describedBy` from `@athene-x/whimui/form` are
+the pure helpers behind validity, error messages, and `aria-describedby`.
