@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "row-actions",
+  "dependencies": [
+    "@tabler/icons-react"
+  ],
+  "registryDependencies": [
+    "button",
+    "dropdown-menu",
+    "@whimui/app-link"
+  ],
+  "files": [
+    {
+      "path": "src/components/row-actions.tsx",
+      "content": "'use client';\n\nimport { IconDotsVertical } from '@tabler/icons-react';\nimport { Fragment, type ReactNode } from 'react';\n\nimport { AppLink } from '@/components/app-link';\nimport { Button } from '@/components/ui/button';\nimport {\n  DropdownMenu,\n  DropdownMenuContent,\n  DropdownMenuItem,\n  DropdownMenuSeparator,\n  DropdownMenuTrigger,\n} from '@/components/ui/dropdown-menu';\n\nexport type RowAction = {\n  key: string;\n  icon: ReactNode;\n  label: string;\n  /** A link item; otherwise `onSelect` runs when picked. */\n  href?: string;\n  onSelect?: () => void;\n  destructive?: boolean;\n  /** A solid (primary) button in the header; outline otherwise. */\n  primary?: boolean;\n  /** Only in the \"⋮\" menu (e.g. \"view\": the header already is the detail page). */\n  menuOnly?: boolean;\n  /** A divider above this item in the menu. */\n  separator?: boolean;\n  /** Dropped altogether (permission or status gating). */\n  hidden?: boolean;\n};\n\nexport type RowActionsProps = {\n  actions: RowAction[];\n  /** Buttons in a page header instead of the \"⋮\" menu of a table row. */\n  inHeader?: boolean;\n  /** Accessible name of the menu trigger, e.g. `Manage ${name}`. */\n  label: string;\n};\n\nfunction headerVariant(action: RowAction) {\n  if (action.destructive) return 'destructive';\n  if (action.primary) return 'default';\n  return 'outline';\n}\n\n/**\n * The same list of things one can do to a row, rendered either as the \"⋮\" dropdown of a table\n * row or as the buttons in the header of its detail page.\n */\nexport function RowActions({ actions, inHeader = false, label }: RowActionsProps) {\n  const visible = actions.filter((action) => !action.hidden);\n\n  if (inHeader) {\n    return (\n      <>\n        {visible\n          .filter((action) => !action.menuOnly)\n          .map((action) =>\n            action.href !== undefined ? (\n              <Button\n                key={action.key}\n                variant={headerVariant(action)}\n                nativeButton={false}\n                render={<AppLink href={action.href} />}\n              >\n                {action.icon} {action.label}\n              </Button>\n            ) : (\n              <Button key={action.key} variant={headerVariant(action)} onClick={action.onSelect}>\n                {action.icon} {action.label}\n              </Button>\n            ),\n          )}\n      </>\n    );\n  }\n\n  return (\n    <DropdownMenu>\n      <DropdownMenuTrigger render={<Button variant=\"ghost\" size=\"icon-sm\" aria-label={label} />}>\n        <IconDotsVertical />\n      </DropdownMenuTrigger>\n      <DropdownMenuContent align=\"end\">\n        {visible.map((action) => (\n          <Fragment key={action.key}>\n            {action.separator && <DropdownMenuSeparator />}\n            {action.href !== undefined ? (\n              <DropdownMenuItem\n                variant={action.destructive ? 'destructive' : 'default'}\n                render={<AppLink href={action.href} />}\n              >\n                {action.icon} {action.label}\n              </DropdownMenuItem>\n            ) : (\n              <DropdownMenuItem\n                variant={action.destructive ? 'destructive' : 'default'}\n                onClick={action.onSelect}\n              >\n                {action.icon} {action.label}\n              </DropdownMenuItem>\n            )}\n          </Fragment>\n        ))}\n      </DropdownMenuContent>\n    </DropdownMenu>\n  );\n}\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

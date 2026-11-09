@@ -12,5 +12,5 @@ pnpm add @athene-x/whimui
 ```
 
 Entry points: `.`, `./list-query`, `./api`, `./query`, `./form`, `./auth`, `./i18n`, `./hooks`,
-`./messages/en`, `./messages/th`. See `docs/releases.md` in the repository for versioning
-and publishing.
+`./messages/en`, `./messages/th`. `./auth` is server-only and needs the optional peers `jose`
+and `better-auth`. See `docs/releases.md` in the repository for versioning and publishing.

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "side-panel",
+  "dependencies": [
+    "@tabler/icons-react"
+  ],
+  "files": [
+    {
+      "path": "src/components/side-panel.tsx",
+      "content": "'use client';\n\nimport { IconChevronDown } from '@tabler/icons-react';\nimport { type ReactNode, useId, useState } from 'react';\n\nimport { cn } from '@/lib/utils';\n\nexport function SidePanelLayout({ children }: { children: ReactNode }) {\n  return <div className=\"grid gap-6 @5xl:grid-cols-[20rem_minmax(0,1fr)]\">{children}</div>;\n}\n\nexport type SidePanelProps = {\n  title: ReactNode;\n  children: ReactNode;\n};\n\n/** Left column of a `SidePanelLayout`; collapses into a disclosure below the `@5xl` width. */\nexport function SidePanel({ title, children }: SidePanelProps) {\n  const contentId = useId();\n  const [open, setOpen] = useState(false);\n\n  return (\n    <aside className=\"flex flex-col gap-6 @max-5xl:rounded-2xl @max-5xl:border @max-5xl:p-4 @5xl:border-r @5xl:pr-6\">\n      <h3 className=\"font-medium\">\n        <button\n          type=\"button\"\n          className=\"group flex w-full items-center justify-between gap-2 @5xl:hidden\"\n          aria-expanded={open}\n          aria-controls={contentId}\n          onClick={() => setOpen((current) => !current)}\n        >\n          {title}\n          <IconChevronDown className=\"size-4 text-muted-foreground group-aria-expanded:rotate-180\" />\n        </button>\n        <span className=\"@max-5xl:hidden\">{title}</span>\n      </h3>\n      <div id={contentId} className={cn('flex flex-col gap-6', !open && '@max-5xl:hidden')}>\n        {children}\n      </div>\n    </aside>\n  );\n}\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

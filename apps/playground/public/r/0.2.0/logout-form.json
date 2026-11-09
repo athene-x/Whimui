@@ -1,0 +1,12 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "logout-form",
+  "files": [
+    {
+      "path": "src/components/logout-form.tsx",
+      "content": "'use client';\n\nimport { type ReactNode, useState } from 'react';\n\nexport type LogoutFormProps = {\n  /** The app's logout route (a POST that ends the Better Auth + Keycloak session). */\n  action?: string;\n  className?: string;\n  /** Renders the button and gets the pending state. */\n  children: (pending: boolean) => ReactNode;\n};\n\nexport function LogoutForm({ action = '/api/auth/logout', className, children }: LogoutFormProps) {\n  const [pending, setPending] = useState(false);\n\n  return (\n    <form\n      action={action}\n      method=\"post\"\n      className={className}\n      onSubmit={(event) => {\n        if (pending) event.preventDefault();\n        else setPending(true);\n      }}\n    >\n      {children(pending)}\n    </form>\n  );\n}\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

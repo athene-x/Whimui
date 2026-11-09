@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "app-link",
+  "title": "App link",
+  "description": "next/link plus BasePathProvider for apps whose zones live under a prefix.",
+  "files": [
+    {
+      "path": "src/components/app-link.tsx",
+      "content": "'use client';\n\nimport type { ComponentProps } from 'react';\n\nimport NextLink from 'next/link';\n\nimport { useBaseHref } from '@/components/base-path-provider';\n\nexport type AppLinkProps = ComponentProps<typeof NextLink>;\n\n/** `next/link` that honours the nearest `BasePathProvider`. */\nexport function AppLink({ href, ...props }: AppLinkProps) {\n  const baseHref = useBaseHref();\n\n  return <NextLink href={typeof href === 'string' ? baseHref(href) : href} {...props} />;\n}\n",
+      "type": "registry:component"
+    },
+    {
+      "path": "src/components/base-path-provider.tsx",
+      "content": "'use client';\n\nimport { useRouter } from 'next/navigation';\nimport { type ReactNode, createContext, use, useMemo } from 'react';\n\nconst BasePathContext = createContext('');\n\nexport type BasePathProviderProps = {\n  basePath: string;\n  children: ReactNode;\n};\n\n/**\n * Prefix for every in-app link below it (e.g. `/t/<tenant>`); without a provider links are\n * used as written, so `AppLink` is a drop-in for `next/link` in apps with one zone.\n */\nexport function BasePathProvider({ basePath, children }: BasePathProviderProps) {\n  return <BasePathContext value={basePath}>{children}</BasePathContext>;\n}\n\nexport function withBasePath(basePath: string, href: string): string {\n  if (!basePath || !href.startsWith('/') || href.startsWith('//')) return href;\n  return href === '/' ? basePath : `${basePath}${href}`;\n}\n\nexport function stripBasePath(basePath: string, pathname: string): string {\n  if (!basePath) return pathname;\n  if (pathname === basePath) return '/';\n  return pathname.startsWith(`${basePath}/`) ? pathname.slice(basePath.length) : pathname;\n}\n\nexport function useBasePath(): string {\n  return use(BasePathContext);\n}\n\nexport function useBaseHref(): (href: string) => string {\n  const basePath = useBasePath();\n  return (href) => withBasePath(basePath, href);\n}\n\ntype NavigateOptions = Parameters<ReturnType<typeof useRouter>['push']>[1];\n\nexport function useAppRouter() {\n  const router = useRouter();\n  const basePath = useBasePath();\n\n  return useMemo(\n    () => ({\n      push: (href: string, options?: NavigateOptions) =>\n        router.push(withBasePath(basePath, href), options),\n      replace: (href: string, options?: NavigateOptions) =>\n        router.replace(withBasePath(basePath, href), options),\n      refresh: () => router.refresh(),\n      back: () => router.back(),\n    }),\n    [router, basePath],\n  );\n}\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}
