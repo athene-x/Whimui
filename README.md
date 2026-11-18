@@ -82,8 +82,8 @@ Item files import `@/components/ui/*`, `@/lib/utils`, `@/components/*` and
    list it in `registryDependencies`, so it also comes along on its own. Retune the values to
    the app's palette afterwards.
 
-Publishing the core package (GitHub Packages or a private registry) and hosting `public/r`
-(GitHub Pages or the playground itself) are not set up yet.
+The core package is published publicly to npm (see `docs/releases.md`). Hosting `public/r`
+(GitHub Pages or the playground itself) is not set up yet.
 
 ## What an app must provide
 
